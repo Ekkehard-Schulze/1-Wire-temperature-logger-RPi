@@ -104,8 +104,8 @@ write_log_data_to_file = True  # may get changed by command line argument
 LOG_FILE_NAME = '1wire-temperatures.tsv'  # if empty name comes from first sensor object
 
 LOGGER_DATA_DIR = '~/1wire_logs'  # relative to user home
-#LOGGER_DATA_DIR = r'/home/your_user_name/logged_data/1wire_logs'  # use absolute path for crontab jobs !!!
-#LOGGER_DATA_DIR = './1wire_logs'  # relative to present dir
+# LOGGER_DATA_DIR = r'/home/your_user_name/logged_data/1wire_logs'  # use absolute path for crontab jobs !!!
+# LOGGER_DATA_DIR = './1wire_logs'  # relative to present dir
 
 
 USE_SHORT_SENSOR_NAMES = True  # short is like DS133, long is like DS18B20_159
@@ -113,7 +113,7 @@ USE_SHORT_SENSOR_NAMES = True  # short is like DS133, long is like DS18B20_159
 VERBOSE = True  # print data to stdout
 
 LOG_EXCEPTIONS_TO_FILE = False  # attention: if set to True, you get no backtraces on the terminal,
-                               # activate this only for crontab jobs !!!
+                                # activate this only for crontab jobs !!!
 SEPARATOR = '\t'
 
 LOG_EXCEPTIONS_FILE_NAME = 'expeptions_log.txt'
@@ -164,18 +164,193 @@ class one_wire_temperature():
         Be aware that this in rare cases can poduce collisions, which is two sensors with the same
         name. Currently the code is not warning for collisions.
         '''
-        hexl = device_folderl.split(os.sep)[-1].replace('-', '')
-        hexf = device_folderl.split(os.sep)[-1][0:2]  # familycode
-        bbb = bytearray.fromhex(hexl)
+        hex_id = device_folderl.split(os.sep)[-1].replace('-', '')
+        family_code = device_folderl.split(os.sep)[-1][0:2]
+        bbb = bytearray.fromhex(hex_id)
         if USE_SHORT_SENSOR_NAMES:
             sensor_name = "DS" + str(sum(bbb) % 256)
         else:
-            sensor_name = one_wire_temperature.FAMILY_CODES[hexf] + '_' + str(sum(bbb) % 256)
+            sensor_name = one_wire_temperature.FAMILY_CODES[family_code] + '_' + str(sum(bbb) % 256)
         return (
             sensor_name_translation[sensor_name]
             if sensor_name in sensor_name_translation
             else sensor_name
         )
+
+    def thermoelement_type_K_linearization(self, temp):
+        ''' physical linearization table for type K thermocouples based on ITS-90 standards '''
+        K_linearization_lookup_table = (
+            (-210, -63.79),
+            (-200, -57.28),
+            (-190, -51.18),
+            (-180, -45.54),
+            (-170, -40.29),
+            (-160, -35.45),
+            (-150, -30.97),
+            (-140, -26.88),
+            (-130, -23.13),
+            (-120, -19.75),
+            (-110, -16.68),
+            (-100, -13.90),
+            (-90, -11.43),
+            (-80, -9.26),
+            (-70, -7.32),
+            (-60, -5.66),
+            (-50, -4.23),
+            (-40, -3.01),
+            (-30, -1.99),
+            (-20, -1.15),
+            (-10, -0.50),
+            (0, 0.00),
+            (10, 0.38),
+            (20, 0.67),
+            (30, 0.85),
+            (40, 0.95),
+            (50, 0.99),
+            (60, 0.98),
+            (70, 0.93),
+            (80, 0.85),
+            (90, 0.80),
+            (100, 0.77),
+            (110, 0.76),
+            (120, 0.80),
+            (130, 0.92),
+            (140, 1.06),
+            (150, 1.29),
+            (160, 1.55),
+            (170, 1.84),
+            (180, 2.17),
+            (190, 2.51),
+            (200, 2.84),
+            (210, 3.12),
+            (220, 3.41),
+            (230, 3.65),
+            (240, 3.86),
+            (250, 4.02),
+            (260, 4.14),
+            (270, 4.20),
+            (280, 4.25),
+            (290, 4.24),
+            (300, 4.21),
+            (310, 4.16),
+            (320, 4.08),
+            (330, 3.98),
+            (340, 3.87),
+            (350, 3.72),
+            (360, 3.55),
+            (370, 3.37),
+            (380, 3.17),
+            (390, 2.97),
+            (400, 2.75),
+            (410, 2.50),
+            (420, 2.25),
+            (430, 1.98),
+            (440, 1.71),
+            (450, 1.41),
+            (460, 1.11),
+            (470, 0.82),
+            (480, 0.50),
+            (490, 0.18),
+            (500, -0.15),
+            (510, -0.49),
+            (520, -0.81),
+            (530, -1.16),
+            (540, -1.48),
+            (550, -1.80),
+            (560, -2.14),
+            (570, -2.46),
+            (580, -2.78),
+            (590, -3.08),
+            (600, -3.38),
+            (610, -3.67),
+            (620, -3.97),
+            (630, -4.24),
+            (640, -4.49),
+            (650, -4.74),
+            (660, -4.96),
+            (670, -5.19),
+            (680, -5.36),
+            (690, -5.56),
+            (700, -5.71),
+            (710, -5.86),
+            (720, -5.97),
+            (730, -6.07),
+            (740, -6.15),
+            (750, -6.20),
+            (760, -6.26),
+            (770, -6.26),
+            (780, -6.24),
+            (790, -6.23),
+            (800, -6.16),
+            (810, -6.09),
+            (820, -5.98),
+            (830, -5.86),
+            (840, -5.72),
+            (850, -5.53),
+            (860, -5.35),
+            (870, -5.11),
+            (880, -4.87),
+            (890, -4.59),
+            (900, -4.30),
+            (910, -3.97),
+            (920, -3.64),
+            (930, -3.28),
+            (940, -2.87),
+            (950, -2.47),
+            (960, -2.01),
+            (970, -1.53),
+            (980, -1.05),
+            (990, -0.53),
+            (1000, 0.01),
+            (1010, 0.58),
+            (1020, 1.17),
+            (1030, 1.79),
+            (1040, 2.44),
+            (1050, 3.11),
+            (1060, 3.82),
+            (1070, 4.54),
+            (1080, 5.30),
+            (1090, 6.09),
+            (1100, 6.90),
+            (1110, 7.75),
+            (1120, 8.62),
+            (1130, 9.53),
+            (1140, 10.46),
+            (1150, 11.43),
+            (1160, 12.44),
+            (1170, 13.47),
+            (1180, 14.54),
+            (1190, 15.65),
+            (1200, 16.79),
+            (1210, 17.97),
+            (1220, 19.18),
+            (1230, 20.43),
+            (1240, 21.72),
+            (1250, 23.04),
+            (1260, 24.41),
+            (1270, 25.81),
+            (1280, 27.25),
+            (1290, 28.73),
+            (1300, 30.25),
+            (1310, 31.80),
+            (1320, 33.40),
+            (1330, 35.03),
+            (1340, 36.70),
+            (1350, 38.40),
+            (1360, 40.13),
+            (1370, 41.90),
+            (2000, 41.90),
+        )
+
+        i = 0
+        while temp >= K_linearization_lookup_table[i][0]:
+            i += 1
+        i -= 1
+        interval_for_interpolation = K_linearization_lookup_table[i + 1][1] - K_linearization_lookup_table[i][1]
+        Fraction = (temp - K_linearization_lookup_table[i][0]) / (K_linearization_lookup_table[i + 1][0] - (K_linearization_lookup_table[i][0]))
+        temp_linearized = temp + (Fraction * interval_for_interpolation) + K_linearization_lookup_table[i][1]
+
+        return temp_linearized
 
     def _read_temp_raw(self, device_folderl):
         '''acces and read device dir'''
@@ -207,6 +382,8 @@ class one_wire_temperature():
             if equals_pos != -1:
                 temp_string = lines[1][equals_pos + 2:]
                 temp_c = float(temp_string) / 1000.0
+                if device_folder.split(os.sep)[-1][0:2] == "3b":  # Type K thermocouple
+                    temp_c = self.thermoelement_type_K_linearization(temp_c)
             out_str += f'{SEPARATOR}{temp_c:.2f}'
         return out_str
 
@@ -215,9 +392,7 @@ def truncate_log_top(log_file_namel):
     '''Delete 10% top part of log data in order to limit file size.
     This prunes oldest data.'''
     if 0 < MAX_LOG_SIZE < os.stat(log_file_namel).st_size:
-        # num_lines = sum(1 for _ in open(log_file_namel, encoding=ENCODING)) # counts lines correctly, however does not close handle
         with open(log_file_namel, encoding=ENCODING) as f:
-            #num_lines = sum(1 for _ in f.read()) / 2 # no idea why this double-counts the lines, tested on MS-Win
             num_lines = len(f.readlines())
         n_lines_to_delete = int(0.1 * num_lines)
         print('lines deleted', n_lines_to_delete)
@@ -273,17 +448,17 @@ try:  # -------- outer error handler loop -------------------
 
     # --------------- collect all sensor names from sensor objects -------------------------------
 
-    #sens_header = ''.join([SEPARATOR + sensor.get_sensor_headers()  for sensor in my_sensors])
+    # sens_header = ''.join([SEPARATOR + sensor.get_sensor_headers()  for sensor in my_sensors])
 
-    sens_header = ''.join([sensor.get_sensor_headers()  for sensor in my_sensors]) # concat for multiple
-                                                                                   # heterogeneous sensor objects
+    sens_header = ''.join([sensor.get_sensor_headers() for sensor in my_sensors])   # concat for multiple
+                                                                                    # heterogeneous sensor objects
     if VERBOSE or write_log_data_to_file:
         print('\nSensor(s) ' + sens_header.replace(SEPARATOR, ' '))
 
     # ------------------- init log file  ------------------------
 
-    if not os.path.isfile(LOGGER_DATA_DIR + os.sep + LOG_FILE_NAME) and write_log_data_to_file:   # test for file presence to assure a single header line
-        with open(LOGGER_DATA_DIR + os.sep + LOG_FILE_NAME, "a", encoding=ENCODING) as log_file:  # use append mode to prevent deleting data. Append makes a new file if none exists.
+    if not os.path.isfile(LOGGER_DATA_DIR + os.sep + LOG_FILE_NAME) and write_log_data_to_file:     # test for file presence to assure a single header line
+        with open(LOGGER_DATA_DIR + os.sep + LOG_FILE_NAME, "a", encoding=ENCODING) as log_file:    # use append mode to prevent deleting data. Append makes a new file if none exists.
             log_file.write(
                 LOGGER_ID_field_name + SEPARATOR
                 + DATE_TIME_field_name

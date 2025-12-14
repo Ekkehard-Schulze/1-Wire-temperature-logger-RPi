@@ -36,17 +36,11 @@ on the same bus. This script logs data from all attached
 DS1825, and DS28EA00.
 
 
-The 1-Wire bus can power sensors using 'external power'
-
-(three wires) or 'parasite power' (two wires).
-
-This code was only tested using external power.
-
 This script can run continously to log periodic temperature measurements.
 
 Alternatively, it can be used to record a single dataframe.
 
-This mode is inteded for usage as a crontab job.
+This mode is intended for usage as a crontab job.
 
 This is recomended for long recording times in larger
 
@@ -58,6 +52,14 @@ For exmaple, use this crontab entry line to trigger a single
 data frame recording every 15 minutes:
 
 */15  * * * *    /home/user_name/bin/1wire-temperature-logger-RPi.pyw -q    >/dev/null 2>>/dev/null
+
+
+
+The 1-Wire bus can power sensors using 'external power'
+
+(three wires) or 'parasite power' (two wires).
+
+This code was only tested using external power.
 
 
 The default Raspberry Pi GPIO pin for 1-Wire communication is
