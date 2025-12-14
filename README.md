@@ -66,7 +66,7 @@ You'll need a pull-up resistor (typically 4.7kΩ) between the data line and 3.3V
 connecting the sensor's DQ to GPIO4, GND to Pi's GND, and VDD to 3.3V.
 
 
-
+ <! -- your 
 
 Images
 -------
@@ -88,3 +88,5 @@ Logger with sensor attached
 TMP117A sensor soldered to wires and coated with cyanoacrylate after years of lab use. 
 
 Avoid outdoor use of cyanoacrylate polymer (CyA) coated sensors; UV light deteriorates CyA.
+
+comment -->
