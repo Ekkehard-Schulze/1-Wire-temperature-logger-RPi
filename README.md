@@ -3,7 +3,7 @@
 
 This python script uses the Linux kernel driver 
 
-for sensor readings of 1-Wire bus.
+for sensor readings of the 1-Wire bus.
 
 The 1-Wire bus allows many temperature sensors on
 
@@ -11,30 +11,28 @@ a single bus cable with many meter long connections.
 
 This script was run in a lab  environment for years 
 
-using a RaspberryPi 4 as a crontab job. The sensor 
+using to record the usage of mercury short arc lamps.
 
-chain used carried 6 DS18B20 sensors on a 8 meter long 
+The sensor chain used for this purpose carried six DS18B20 
 
-cable and monitored the usage of mercury short arc lamp.
+sensors on a 8 meter long cable. 
  
-Moreover, four type K thermocouples were tested using the
+Type K thermocouples were tested using the
 
 MAX31850 based Adafruit #1727 interface.
 
+The 1-Wire temperature sensors are auto-discovered by the 
 
-
-The sensors are auto-discovered by the kernel
-
-during startup and all read out by this script.
-
-Different types of sensors can be used together
+kernel during startup. Different types of sensors can be used 
 
 on the same bus. This script logs data from all attached
 
 1Wire temperature sensors. The sensors supported by the
 
 Linux kernal are DS18S22", DS18B20, DS18B20, MAX31850,
+
 DS1825, and DS28EA00.
+
 
 The 1-Wire bus can power sensors using 'external power'
 
@@ -42,20 +40,18 @@ The 1-Wire bus can power sensors using 'external power'
 
 This code was only tested using external power.
 
+This script can run continously to log periodic temperature measurements.
 
+Alternatively, it can be used to record a single dataframe.
 
+This mode is inteded for usage as a crontab job.
 
-This script can iterate unlimited periodic measurements.
+This is recomended for long recording times in larger
 
-Alternatively, it can be used for a single dataframe reading
+time intervals.
 
-triggered by the crontab deamon. The latter is recomended
+crontab entry used to trigger a single data frame log every 15 minutes:
 
-for indefinite measurements with larger time intervals.
-
-crontab entry used to trigger a single data logging event every 15 minutes:
-# -----------------------------------------------
-# quarter-hourly logging of all 1-Wire temperature sensors
 */15  * * * *    /home/user_name/bin/1wire-temperature-logger-RPi.pyw -q    >/dev/null 2>>/dev/null
 
 
