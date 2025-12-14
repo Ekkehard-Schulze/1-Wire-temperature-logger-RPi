@@ -60,7 +60,7 @@ you invoke the script as a cron job.
 Images
 -------
 
-![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/Raspi_with_1wire_bus.jpg)
+![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/Raspi_with_1Wire_bus.jpg)
 
 8 meter long 1-Wire bus cable with six DS18B20 sensors connected to a RaspberryPi3B+.
 
