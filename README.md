@@ -9,7 +9,7 @@ The 1-Wire bus allows many temperature sensors on
 
 a single bus cable with many meter long connections.
 
-This script was run in a lab  environment for years 
+This script was run in a lab environment for years 
 
 using to record the usage of mercury short arc lamps.
 
@@ -36,18 +36,18 @@ on the same bus. This script logs data from all attached
 DS1825, and DS28EA00.
 
 
-This script can run continously to log periodic temperature measurements.
+This script can run continuously to log periodic temperature measurements.
 
-Alternatively, it can be used to record a single dataframe.
+Alternatively, it can be used to record a single data frame.
 
 This mode is intended for usage as a crontab job.
 
-This is recomended for long recording times in larger
+This is recommended for long recording times in larger
 
 time intervals.
 
 
-For exmaple, use this crontab entry line to trigger a single 
+For example, use this crontab entry line to trigger a single 
 
 data frame recording every 15 minutes:
 
@@ -66,7 +66,7 @@ The default Raspberry Pi GPIO pin for 1-Wire communication is
 
 GPIO4 (physical pin 7), but you can use other pins by enabling
 
-the interface in /boot/config.txt and specifying a gpiopin.
+the interface in /boot/config.txt and specifying a gpio pin.
 
 You'll need a pull-up resistor (typically 4.7kΩ) between the data line and 3.3V,
 
