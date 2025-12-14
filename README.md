@@ -61,9 +61,9 @@ Notes
 
 2.) Read the 'user settings' (line 87 to 130) and modify these according to your needs.
 
-3.) The file names extension '.pyw' prevents the opening of a terminal window in case
+3.) The file name extension '.pyw' prevents the opening of a terminal window in case
 
-    you invoke the script as a cron job.
+you invoke the script as a cron job.
 
 
 
