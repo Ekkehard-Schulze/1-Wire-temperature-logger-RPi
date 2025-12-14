@@ -56,27 +56,15 @@ Moreover, you'll need a pull-up resistor (typically 4.7kΩ) between the
 data line and 3.3V, connect the sensor's GND to Pi's GND, and VDD to 3.3V.
 
 
-<!-- your 
 
 Images
 -------
 
-![Sensor before and after coating with epoxy resin](https://github.com/Ekkehard-Schulze/precision-temperature-logger/blob/main/hardware_sensor_breakout_boards/TMP117-WSON-package-Sensor-PCBs/populated%20TMP117%20sensor%20breakout%20PCB.jpg)
 
-Board with TMP117A sensor before and after coating with epoxy resin
+![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/Raspi_with_1Wire_bus.jpg)
 
-![Sensor before and after coating with epoxy resin](https://github.com/Ekkehard-Schulze/precision-temperature-logger/blob/main/hardware_sensor_breakout_boards/TMP117-WSON-package-Sensor-PCBs/Sensor_with_wires_and_plug.jpg)
+8 meter long 1-wire bus cable with six DS18B20 sensors connected to a RaspberryPi3B+
 
-Sensor board with polytetrafluoroethylene isolated wires and plug
+![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/Raspi_with_typeK_thermocouples.jpg)
 
-![Sensor before and after coating with epoxy resin](https://github.com/Ekkehard-Schulze/precision-temperature-logger/blob/main/hardware_sensor_breakout_boards/TMP117-WSON-package-Sensor-PCBs/Logger_with_Sensor.jpg)
-
-Logger with sensor attached
-
-![Sensor before and after coating with epoxy resin](https://github.com/Ekkehard-Schulze/precision-temperature-logger/blob/main/hardware_sensor_breakout_boards/TMP117_in_CyA.JPG)
-
-TMP117A sensor soldered to wires and coated with cyanoacrylate after years of lab use. 
-
-Avoid outdoor use of cyanoacrylate polymer (CyA) coated sensors; UV light deteriorates CyA.
-
-comment -->
+Four type K thermocouples connected to a RaspberryPi3B+ via MAX31850 amplifiers
