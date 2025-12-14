@@ -7,31 +7,29 @@ This Python script uses the Linux kernel driver for
 
 temperature sensors on a single long cable. 
 
-This script was used to document mercury arc lamp usage in a lab
+This was used to document mercury arc lamp usage in a lab
 
-for two years without reboot. Moreover, type K thermocouples were used 
+for two years without rebooting the system. 
 
-with the MAX31850 interface circuit for measuring temperatures 
+Moreover, type K thermocouples served for measuring temperatures 
 
-ranging from -200°C to 1260°C. 
+ranging from -200°C to 1260°C with the MAX31850 interface.
 
 The Linux kernel auto-discovers 1-Wire temperature sensors at startup.
 
 Different types of sensors can be used on the same bus. This script logs 
 
-data from all connected 1Wire temperature sensors. The kernel supports 
+data from all connected 1-Wire temperature sensors. The kernel supports 
 
-1-Wire sensors DS18S20, DS1822, DS18B20, MAX31850, DS1825, and DS28EA00. 
+1-Wire sensor types DS18S20, DS1822, DS18B20, MAX31850, DS1825, and DS28EA00. 
 
 This script either logs periodic temperature measurements with its own timer,
 
 or, alternatively, records a single data frame, suitable for a periodic call
 
-by the cron deamon. Use the latter for long recordings with larger
+by the cron deamon.
 
-time intervals.
-
-For example, this crontab line triggers a data frame recording every 15 minutes: 
+For example, this crontab line commands a data frame recording every 15 minutes: 
 
 */15  * * * *    /home/user_name/bin/1wire-temperature-logger-RPi.pyw -q    >/dev/null 2>>/dev/null
 
@@ -49,7 +47,7 @@ via raspi-config. The default Raspberry Pi GPIO pin for
 
 You need a pull-up resistor (typically 4.7kΩ) between the 
 
-data line and 3.3V. Connect the sensor's GND to Pi's GND, and 
+data line and 3.3V. Noreover, the sensor's GND to Pi's GND, and 
 
 VDD to 3.3V.
 
@@ -59,7 +57,7 @@ Notes
 
 1.) To see the (few) command line options use './1wire-temperature-logger-RPi.pyw -h'
 
-2.) Read the 'user settings' (line 87 to 130) and modify these according to your needs.
+2.) Read the 'user settings' (lines 87 to 130) and modify these according to your needs.
 
 3.) The file name extension '.pyw' prevents the opening of a terminal window in case
 
