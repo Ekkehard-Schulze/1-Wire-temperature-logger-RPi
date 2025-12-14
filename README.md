@@ -41,17 +41,17 @@ The 1-Wire bus can power sensors using 'external power'
 
 This script was only tested using external power.
 
-To use 1-wire senors with a Raspberry Pi, activate the 1-Wire bus 
+To use 1-wire sensors with a Raspberry Pi, activate the 1-Wire bus 
 
 via raspi-config. The default Raspberry Pi GPIO pin for 
 
-1-Wire communication is GPIO4 (physical pin 7), but you can use other 
+1-Wire communication is GPIO4 (physical pin 7).
 
-pins by specifying a different gpio pin in /boot/config.txt.
+You need a pull-up resistor (typically 4.7kΩ) between the 
 
-Moreover, you'll need a pull-up resistor (typically 4.7kΩ) between the 
+data line and 3.3V. Connect the sensor's GND to Pi's GND, and 
 
-data line and 3.3V, connect the sensor's GND to Pi's GND, and VDD to 3.3V.
+VDD to 3.3V.
 
 
 
