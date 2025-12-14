@@ -11,9 +11,11 @@ The script tracked mercury arc lamp usage in a lab for years
 
 with DS18B20 sensors. Moreover, type K thermocouples were used 
 
-with the MAX31850 Adafruit 1727 interface, measuring -200°C to 1260°C. 
+with the MAX31850 Adafruit 1727 interface, measuring temperatures 
 
-The kernel auto-discovers 1-Wire temperature sensors at startup.
+ranging from -200°C to 1260°C. 
+
+The Linux kernel auto-discovers 1-Wire temperature sensors at startup.
 
 Various sensors can be used on the same bus. This script logs 
 
