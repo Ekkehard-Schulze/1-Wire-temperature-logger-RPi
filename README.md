@@ -67,4 +67,4 @@ Images
 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/Raspi_with_typeK_thermocouples.jpg)
 
-Four type K thermocouples connected to a RaspberryPi3B+ via 1-Wire bus using MAX31850 amplifiers
+Four type K thermocouples connected via 1-Wire bus to a RaspberryPi3B+ using MAX31850 amplifiers
