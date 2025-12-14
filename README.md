@@ -7,21 +7,21 @@ This Python script uses the Linux kernel driver for
 
 temperature sensors on a single long cable. 
 
-The script tracked mercury arc lamp usage in a lab for years 
+This script tracked mercury arc lamp usage in a lab for years 
 
-with DS18B20 sensors. Moreover, type K thermocouples were used 
+using DS18B20 sensors. Moreover, type K thermocouples were used 
 
-with the MAX31850 Adafruit 1727 interface, measuring temperatures 
+with the MAX31850 Adafruit 1727 interface, for measuring temperatures 
 
 ranging from -200°C to 1260°C. 
 
 The Linux kernel auto-discovers 1-Wire temperature sensors at startup.
 
-Various sensors can be used on the same bus. This script logs 
+Different types of sensors can be used on the same bus. This script logs 
 
 data from all 1Wire temperature sensors. The kernel supports 1-Wire 
 
-sensors DS18S22, DS18B20, MAX31850, DS1825, and DS28EA00. 
+sensors DS18S20, DS1822, DS18B20, MAX31850, DS1825, and DS28EA00. 
 
 This script either logs periodic temperature measurements or, 
 

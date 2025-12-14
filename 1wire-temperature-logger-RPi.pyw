@@ -145,8 +145,8 @@ class one_wire_temperature():
 
     FAMILY_CODES = {
 
-        "10": "DS18S22",
-        "22": "DS18B20",
+        "10": "DS18S20",
+        "22": "DS1822",
         "28": "DS18B20",
         "3b": "MAX31850",  # could also be "DS1825", both are for type-K thermocouples
         "42": "DS28EA00",
