@@ -35,19 +35,16 @@ on the same bus. This script logs data from all attached
 
 DS1825, and DS28EA00.
 
+This script logs periodic temperature measurements or, alternatively,
 
-This script can run continuously to log periodic temperature measurements.
+records a single data frame, suitable for a crontab job.
 
-Alternatively, it can be used to record a single data frame.
-
-This mode is intended for usage as a crontab job.
-
-This is recommended for long recording times in larger
+Prefer the latter for very long recordings with larger
 
 time intervals.
 
 
-For example, use this crontab entry line to trigger a single 
+For example, use this crontab line to trigger a single 
 
 data frame recording every 15 minutes:
 
@@ -61,16 +58,21 @@ The 1-Wire bus can power sensors using 'external power'
 
 This code was only tested using external power.
 
+For usage with a RspberryPi, the 1-Wire bus must
+
+be activated, e. g. using raspi-config or by editing
+
+/boot/config.txt.
 
 The default Raspberry Pi GPIO pin for 1-Wire communication is
 
-GPIO4 (physical pin 7), but you can use other pins by enabling
+GPIO4 (physical pin 7), but you can use other pins by 
 
-the interface in /boot/config.txt and specifying a gpio pin.
+specifying a different gpio pin in /boot/config.txt.
 
-You'll need a pull-up resistor (typically 4.7kΩ) between the data line and 3.3V,
+Moreover, you'll need a pull-up resistor (typically 4.7kΩ) between the data line and 3.3V,
 
-connecting the sensor's DQ to GPIO4, GND to Pi's GND, and VDD to 3.3V.
+connect the sensor's GND to Pi's GND, and VDD to 3.3V.
 
 
 <!-- your 
