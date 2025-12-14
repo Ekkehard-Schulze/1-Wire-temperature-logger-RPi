@@ -62,9 +62,9 @@ Images
 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/Raspi_with_1Wire_bus.jpg)
 
-An eight meter long 1-Wire bus cable with six DS18B20 sensors connected to a RaspberryPi3B+
+An eight-meter long 1-Wire bus cable with six DS18B20 sensors connected to a RaspberryPi3B+
 
-was used to document mercury arc lamp usage in a lab for two years without ever rebooting the RaspberryPi.
+was used to document mercury arc lamp usage in a lab for two years without ever rebooting the Raspberry Pi.
 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/Raspi_with_typeK_thermocouples.jpg)
 
