@@ -50,7 +50,10 @@ This is recomended for long recording times in larger
 
 time intervals.
 
-crontab entry used to trigger a single data frame log every 15 minutes:
+
+For exmaple, use this crontab entry line to trigger a single 
+
+data frame recording every 15 minutes:
 
 */15  * * * *    /home/user_name/bin/1wire-temperature-logger-RPi.pyw -q    >/dev/null 2>>/dev/null
 
