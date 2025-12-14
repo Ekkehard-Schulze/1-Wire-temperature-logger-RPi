@@ -3,15 +3,15 @@
 
 This Python script uses the Linux kernel driver for 
 
-1-Wire sensor readings. It recorded mercury short arc lamp 
-
-usage in a lab for years. The 1-Wire bus enables multiple 
+1-Wire sensor readings. The 1-Wire bus enables multiple 
 
 temperature sensors on a single long cable. 
 
-Type K thermocouples were used with the MAX31850 Adafruit 1727 
+The script tracked mercury arc lamp usage in a lab for years 
 
-interface, measuring -200°C to 1260°C. 
+with DS18B20 sensors. Moreover, type K thermocouples were used 
+
+with the MAX31850 Adafruit 1727 interface, measuring -200°C to 1260°C. 
 
 The kernel auto-discovers 1-Wire temperature sensors at startup.
 
@@ -21,25 +21,23 @@ data from all 1Wire temperature sensors. The kernel supports 1-Wire
 
 sensors DS18S22, DS18B20, MAX31850, DS1825, and DS28EA00. 
 
-This script logs periodic temperature measurements or, alternatively,
+This script either logs periodic temperature measurements or, 
 
-records a single data frame, suitable for a crontab job.
+alternatively, records a single data frame, suitable for a crontab job.
 
 Prefer the latter for very long recordings with larger
 
 time intervals.
 
-
-Use this crontab line to trigger a data frame recording every 15 minutes: 
+For example, use this crontab line to trigger a data frame recording every 15 minutes: 
 
 */15  * * * *    /home/user_name/bin/1wire-temperature-logger-RPi.pyw -q    >/dev/null 2>>/dev/null
-
 
 The 1-Wire bus can power sensors using 'external power'
 
 (three wires) or 'parasite power' (two wires).
 
-This code was only tested using external power.
+This script was only tested using external power.
 
 To use with a Raspberry Pi, activate the 1-Wire bus via raspi-config 
 
