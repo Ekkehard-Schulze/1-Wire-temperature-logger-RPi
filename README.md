@@ -70,4 +70,4 @@ was used to document mercury arc lamp usage in a lab for two years without ever 
 
 Four type K thermocouples connected via 1-Wire bus to a RaspberryPi3B+ using MAX31850 amplifiers
 
-allow to measure temperatures ranging from -200°C to 1260°C with the MAX31850 interface.
+allow to measure temperatures ranging from -200°C to 1200°C with the MAX31850 interface.
