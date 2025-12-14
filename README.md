@@ -60,7 +60,7 @@ you invoke the script as a cron job.
 Images
 -------
 
-![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/Raspi_with_1-Wire_bus.jpg)
+![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/Raspi_with_1wire_bus.jpg)
 
 8 meter long 1-Wire bus cable with six DS18B20 sensors connected to a RaspberryPi3B+.
 
@@ -70,4 +70,4 @@ This was used to document mercury arc lamp usage in a lab for two years without 
 
 Four type K thermocouples connected via 1-Wire bus to a RaspberryPi3B+ using MAX31850 amplifiers
 
-allow to meaure temperatures ranging from -200°C to 1260°C with the MAX31850 interface.
+allow to measure temperatures ranging from -200°C to 1260°C with the MAX31850 interface.
