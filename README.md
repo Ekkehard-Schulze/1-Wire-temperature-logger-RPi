@@ -54,6 +54,20 @@ data line and 3.3V. Connect the sensor's GND to Pi's GND, and
 VDD to 3.3V.
 
 
+Notes
+-------
+
+1.) To see the (few) command line options use './1wire-temperature-logger-RPi.pyw -h'
+
+2.) Read the 'user settings' (line 87 to 130) and modify these according to your needs.
+
+3.) The file names extension '.pyw' prevents the opening of a terminal window in case
+
+    you invoke the script as a cron job.
+
+
+
+
 
 Images
 -------
