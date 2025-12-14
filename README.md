@@ -27,9 +27,9 @@ kernel during startup. Different types of sensors can be used
 
 on the same bus. This script logs data from all attached
 
-1Wire temperature sensors. The sensors supported by the
+1Wire temperature sensors. The kernel supports the
 
-Linux kernal are DS18S22", DS18B20, DS18B20, MAX31850,
+1-Wire temperature sensor types DS18S22, DS18B20, DS18B20, MAX31850,
 
 DS1825, and DS28EA00.
 
@@ -66,7 +66,7 @@ You'll need a pull-up resistor (typically 4.7kΩ) between the data line and 3.3V
 connecting the sensor's DQ to GPIO4, GND to Pi's GND, and VDD to 3.3V.
 
 
-<! -- your 
+<!-- your 
 
 Images
 -------
