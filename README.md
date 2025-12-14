@@ -13,13 +13,15 @@ This script was run in a lab  environment for years
 
 using to record the usage of mercury short arc lamps.
 
-The sensor chain used for this purpose carried six DS18B20 
+The sensor chain used for this application carried six DS18B20 
 
 sensors on a 8 meter long cable. 
  
-Type K thermocouples were tested using the
+Moreover, type K thermocouples were tested using the
 
-MAX31850 based Adafruit #1727 interface.
+MAX31850 based Adafruit #1727 interface. Type K thermocouples
+
+allow measurements in the range of -200°C to 1260°C.
 
 The 1-Wire temperature sensors are auto-discovered by the 
 
