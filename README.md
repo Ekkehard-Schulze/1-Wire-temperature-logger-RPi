@@ -58,7 +58,7 @@ Moreover, connect the sensor's GND to Pi's GND, and VDD to 3.3 volt.
 Notes
 -------
 
-1.) To see the (few) command line options use './1-Wire-temperature-logger-RPi.pyw -h'
+1.) To see the command line options use './1-Wire-temperature-logger-RPi.pyw -h'
 
 2.) Read the 'user settings' (lines 87 to 130) and modify these according to your needs.
 
