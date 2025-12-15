@@ -108,18 +108,18 @@ LOGGER_DATA_DIR = '~/1wire_logs'  # relative to user home
 # LOGGER_DATA_DIR = './1wire_logs'  # relative to present dir
 
 
-USE_SHORT_SENSOR_NAMES = True  # short is like DS133, long is like DS18B20_159
+USE_SHORT_SENSOR_NAMES = True  # short format is like DS133, long is like DS18B20_159
 
 VERBOSE = True  # print data to stdout
 
-LOG_EXCEPTIONS_TO_FILE = False  # attention: if set to True, you get no backtraces on the terminal,
-                                # activate this only for crontab jobs !!!
+LOG_EXCEPTIONS_TO_FILE = False  # attention: if set to True, you get no backtraces on the terminal, just the written file
+                                # intended for crontab jobs and for long unsupervised runs
 SEPARATOR = '\t'
 
 LOG_EXCEPTIONS_FILE_NAME = 'expeptions_log.txt'
 
-MAX_LOG_SIZE = None  # none means no limits
-# MAX_LOG_SIZE = 100_000_000  # e. g. for a 10 Mb size limit
+MAX_LOG_SIZE = None  
+# MAX_LOG_SIZE = 100_000_000  # bytes
 
 MAX_READ_ATTEMPTS = 30  # per sensor
 
