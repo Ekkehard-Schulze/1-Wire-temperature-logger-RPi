@@ -25,17 +25,15 @@ For example, this crontab line invokes a data frame recording every 15 minutes:
 
 */15  * * * *    /home/user_name/bin/1-Wire-temperature-logger-RPi.pyw -q    >/dev/null 2>>/dev/null
 
-The script writes a 'tab or comma separated value'
+The script writes a tab separated value formated text file with 
 
-formated text file with ISO 8601 date and time strings 
-
-to a micro-SD card and optionally uses UTC time.
+ISO 8601 date and time to a micro-SD card and optionally uses UTC time.
 
 This format is compatible with python's pandas 
 
 and plotly packages as well as with spreadsheet processing. 
 
-A further script provides interactive graphical data analyzis and statistics.
+A further script provides graphical data analyzis and statistics.
 
 The 1-Wire bus can power sensors using 'external power'
 
