@@ -93,7 +93,8 @@ sensor_name_translation = {  # used in a past project to generate explicit colum
     # 'DS140': "SZX12_L",
 }
 
-USE_UTC_time = True  # otherwise local time is used
+USE_UTC_time = True  # otherwise local time  (with or without UTC offset indication) is used
+USE_LOCAL_time_with_UTC_offset = False # otherwise UTC time or local time without ISO8601 offset is used
 
 log_every_n_seconds = 15  # default value, may get changed by command line argument
 
@@ -441,7 +442,6 @@ if (not os.path.isfile(LOGGER_DATA_DIR + os.sep + LOG_EXCEPTIONS_FILE_NAME)) and
     with open(LOGGER_DATA_DIR + os.sep + LOG_EXCEPTIONS_FILE_NAME, "a", encoding=ENCODING) as except_log_file:
         pass
 
-date_time_format_pattern = "%Y-%m-%dT%H:%M:%SZ" if USE_UTC_time else "%Y-%m-%dT%H:%M:%S"  # iso8601
 
 try:  # -------- outer error handler loop -------------------
 
@@ -491,13 +491,18 @@ try:  # -------- outer error handler loop -------------------
         if now_monotonic_time - last_monotonic_log_time >= log_every_n_seconds:
             last_monotonic_log_time = now_monotonic_time
 
-            now = datetime.now(timezone.utc) if USE_UTC_time else datetime.now()
+            if USE_UTC_time:
+                date_str = datetime.strftime(datetime.now(timezone.utc), "%Y-%m-%dT%H:%M:%SZ")
+            elif USE_LOCAL_time_with_UTC_offset:
+                date_str = str(datetime.now().astimezone().replace(microsecond=0).isoformat())
+            else:
+                date_str = str(datetime.now().replace(microsecond=0).isoformat())  # local time 
 
             sensor_measurements = ''.join([sensor.get_measurement_str() for sensor in my_sensors])
 
             logline = (
                 LOGGER_NAME + SEPARATOR
-                + datetime.strftime(now, date_time_format_pattern)
+                + date_str
                 + sensor_measurements
             )
 
