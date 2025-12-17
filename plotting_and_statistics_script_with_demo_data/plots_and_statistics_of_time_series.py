@@ -34,6 +34,12 @@ WRITE_LOG_data_as_EXCEL_file
 
 WRITE_LOG_data_as_open_doc_ods_file
 
+accepted ISO8601 formtats versions are:
+
+2025-12-02T15:25:00
+2025-12-02T15:25:00+01:00
+2025-12-02T15:25:00Z
+
 '''
 
 import re
@@ -53,7 +59,7 @@ SAVE_interactive_html_plot = True
 SAVE_statistics_file = True
 WRITE_timeline_png = False
 WRITE_LOG_data_as_EXCEL_file = True
-WRITE_LOG_data_as_open_doc_ods_file = False  # failed on large data sets
+WRITE_LOG_data_as_open_doc_ods_file = True  # failed on large data sets
 
 # ----------------- content definitions ------------------------
 CHAR_CODING = "utf8"
@@ -203,15 +209,6 @@ def main():
     
     # --------------- working on data -----------------------------------
 
-    if WRITE_LOG_data_as_EXCEL_file:
-        print("Writing log data to EXCEL file...")        
-        efile_name = output_dir_with_path + add_prefix_to_file_stem_and_swap_extension(logger_tsv_file, last_datetime_str + "_", ".xlsx")        
-        df.to_excel(efile_name, index=False)
-   
-    if WRITE_LOG_data_as_open_doc_ods_file:
-        print("Writing log data to open document file...")        
-        efile_name = output_dir_with_path + add_prefix_to_file_stem_and_swap_extension(logger_tsv_file, last_datetime_str + "_", ".ods")        
-        df.to_excel(efile_name, index=False)
 
     if SAVE_statistics_file:
         print("Writing statistics file...")
@@ -219,7 +216,10 @@ def main():
         sfile_name_xlsx = output_dir_with_path + add_prefix_to_file_stem_and_swap_extension(logger_tsv_file, prefix, ".xlsx") 
         sfile_name_tsv = output_dir_with_path + add_prefix_to_file_stem_and_swap_extension(logger_tsv_file, prefix, ".tsv")                
         df_stats = df.describe()
-        df_stats = df_stats.drop(Date_time_field_name, axis=1)
+        try:
+            df_stats = df_stats.drop(Date_time_field_name, axis=1)
+        except:
+            pass
         df_stats['duration'] = log_duration
         try:
             df_stats.to_csv(sfile_name_tsv, index=True, sep=STATS_file_separator)
@@ -334,6 +334,20 @@ def main():
             fig_time.update_layout(legend_font_size=33)
             fig_time.update_yaxes(automargin=True, title_standoff = 33)            
             fig_time.write_image(png_name)             
+
+    if WRITE_LOG_data_as_EXCEL_file or WRITE_LOG_data_as_open_doc_ods_file:
+        if df[Date_time_field_name].dt.tz is not None:
+            df[Date_time_field_name] = df[Date_time_field_name].dt.tz_localize(None)  # remove timezone info for Excel      
+
+    if WRITE_LOG_data_as_EXCEL_file:
+        print("Writing log data to EXCEL file...")        
+        efile_name = output_dir_with_path + add_prefix_to_file_stem_and_swap_extension(logger_tsv_file, last_datetime_str + "_", ".xlsx")        
+        df.to_excel(efile_name, index=False)
+   
+    if WRITE_LOG_data_as_open_doc_ods_file:
+        print("Writing log data to open document file...")        
+        efile_name = output_dir_with_path + add_prefix_to_file_stem_and_swap_extension(logger_tsv_file, last_datetime_str + "_", ".ods")        
+        df.to_excel(efile_name, index=False)
 
 
 if __name__ == '__main__':
