@@ -35,10 +35,16 @@ WRITE_LOG_data_as_EXCEL_file
 WRITE_LOG_data_as_open_doc_ods_file
 
 accepted ISO8601 formtats versions are:
-
+--------------------------------------
 2025-12-02T15:25:00
 2025-12-02T15:25:00+01:00
 2025-12-02T15:25:00Z
+
+non-iso accepted formats are:
+------------------------------
+2025-12-02 15:25:00
+2025-12-02 15:25:00+01:00
+2025-12-02 15:25:00Z
 
 '''
 
