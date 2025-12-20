@@ -5,7 +5,7 @@ This Python script uses the Linux kernel driver for temperature readings.
 
 The 1-Wire bus enables multiple temperature sensors on a single long cable.
 
-The Linux kernel auto-discovers 1-Wire temperature sensors at startup.
+The Linux kernel auto-discovers 1-Wire temperature sensors on startup.
 
 You can connect different types of sensors to the same bus. The kernel 
 
