@@ -1,25 +1,25 @@
 1-Wire temperature logger for Linux systems
 -------------------------------------------
 
-This Python script uses the Linux kernel driver for 
+This Python script uses the Linux kernel driver for temperature readings. 
 
-1-Wire sensor readings. The 1-Wire bus enables multiple 
-
-temperature sensors on a single long cable. 
+The 1-Wire bus enables multiple temperature sensors on a single long cable.
 
 The Linux kernel auto-discovers 1-Wire temperature sensors at startup.
 
-Different types of sensors can be connected to the same bus. This script logs 
+You can connect different types of sensors to the same bus. The kernel 
 
-data from all connected sensors. The kernel supports 1-Wire sensor types 
+supports 1-Wire sensor types DS18S20, DS1822, DS18B20,  DS28EA00,
 
-DS18S20, DS1822, DS18B20, MAX31850, DS1825, and DS28EA00. 
+MAX31850, and DS1825. The latter two read type K thermocouples,
+
+whereas the others are semiconductor sensors.
 
 This script either logs temperature measurements with its own timer,
 
-or, alternatively, records a single data frame, suitable for periodic calls
+or, alternatively, records a single data frame, suitable for periodic 
 
-by the cron deamon.
+calls by the cron deamon.
 
 For example, this crontab line invokes a data frame recording every 15 minutes: 
 
@@ -27,9 +27,7 @@ For example, this crontab line invokes a data frame recording every 15 minutes:
 
 The script writes a tab separated value formated text file with 
 
-ISO 8601 date and time to a micro-SD card and optionally uses UTC time.
-
-This format is compatible with python's pandas 
+ISO 8601 date and time. This format is compatible with python's pandas 
 
 and plotly packages as well as with spreadsheet processing. 
 
@@ -45,11 +43,11 @@ To use 1-Wire sensors with a Raspberry Pi, activate the 1-Wire bus
 
 via raspi-config. The default Raspberry Pi GPIO pin for 
 
-1-Wire communication is GPIO4.
+1-Wire communication is GPIO4. You need a 4.7kΩ resistor 
 
-You need a 4.7kΩ resistor between the data line and 3.3 volt. 
+between the data line and 3.3 volt. 
 
-Moreover, connect the sensor's GND to Pi's GND, and VDD to 3.3 volt.
+
 
 
 
