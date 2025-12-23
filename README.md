@@ -15,7 +15,13 @@ MAX31850, and DS1825. The latter two read type K thermocouples,
 
 whereas the others are semiconductor sensors.
 
-This script either logs temperature measurements with its own timer,
+The script writes a tab separated value formated text file with 
+
+ISO 8601 date and time. This format is compatible with python's pandas 
+
+and plotly packages as well as with spreadsheet processing. 
+
+The script either logs temperature measurements with its own timer,
 
 or, alternatively, records a single data frame, suitable for periodic 
 
@@ -25,13 +31,7 @@ For example, this crontab line invokes a data frame recording every 15 minutes:
 
 */15  * * * *    /home/user_name/bin/1-Wire-temperature-logger-RPi.pyw -q    >/dev/null 2>>/dev/null
 
-The script writes a tab separated value formated text file with 
-
-ISO 8601 date and time. This format is compatible with python's pandas 
-
-and plotly packages as well as with spreadsheet processing. 
-
-A further script provides graphical data analyzis and statistics.
+Moreover, a further script provides graphical data analyzis and statistics.
 
 The 1-Wire bus can power sensors using 'external power'
 
@@ -62,7 +62,13 @@ Notes
 
 you invoke the script as a cron job.
 
+4.) You might be interested to have a look at Timo Furrer's w1thermsenso package
 
+    https://pypi.org/project/w1thermsensor/ to learn about more sophisticated
+    
+    techniques to interrogate 1Wire temperature sensors using the Linux kernel 
+    
+    driver.
 
 
 
