@@ -9,7 +9,7 @@
 
    the Linux kernel driver for sensor readings
 
-   of 1-Wire bus sensors.
+   of 1-Wire bus temperature sensors.
 
    It was tested and productively used in a lab
 
@@ -35,7 +35,7 @@
 
    This script logs data from all attached
 
-   1Wire temperature sensors.
+   1Wire temperature sensors to a .tsv file.
 
    The 1-Wire bus can power sensors using 'external power'
 
@@ -109,7 +109,7 @@ LOGGER_DATA_DIR = '~/1wire_logs'  # relative to user home
 # LOGGER_DATA_DIR = './1wire_logs'  # relative to present dir
 
 
-USE_SHORT_SENSOR_NAMES = True  # short format is like DS133, long is like DS18B20_159
+USE_SHORT_SENSOR_NAMES = True  # short format is like DS133, long is indicating the sensor type like DS18B20_159
 
 VERBOSE = True  # print data to stdout
 
@@ -119,7 +119,7 @@ SEPARATOR = '\t'
 
 LOG_EXCEPTIONS_FILE_NAME = 'expeptions_log.txt'
 
-MAX_LOG_SIZE = None  
+MAX_LOG_SIZE = None             # set if you want to limit the log file size
 # MAX_LOG_SIZE = 100_000_000  # bytes
 
 MAX_READ_ATTEMPTS = 30  # per sensor
@@ -135,7 +135,7 @@ ENCODING = "utf-8"
 
 class one_wire_temperature():
     ''' ----------- sensor 1wire specific code for logger  ------------
-    stores list of responding 1Wire sensors.
+    stores list of responding 1Wire temperature sensors.
     Retrieves sensor names and measurements of all sensors at once.
 
     8 meter 3wire lab cable logging sequence of 7Q-TEK18B20 is e. g. #1-6: DS159, DS198, DS111, DS74, DS206, DS140
@@ -156,20 +156,22 @@ class one_wire_temperature():
     def __init__(self):
         self.LOGGER_NAME = "1wire_logger"
         self.base_dir = '/sys/bus/w1/devices/'
-        self.device_folder_list = []
+        self.device_folder_list = []  # this list stores the sensors found
         for family_code in one_wire_temperature.FAMILY_CODES:
             self.device_folder_list += glob.glob(self.base_dir + family_code + '*')
 
     def generate_name(self, device_folderl):
-        '''Using 8-bit sum here to generate sonsor name, NOT crc8. Saves the purpose as well
-        Be aware that this in rare cases can poduce collisions, which is two sensors with the same
-        name. Currently the code is not warning for collisions.
+        '''Uses 8-bit sum of hex-ID  to generate sensor names, NOT crc8. Saves the purpose as well
+        Be aware that in rare cases can poduce collisions (two sensors with same name).
+        This code is not warning for collisions, watch yourself.
         '''
         hex_id = device_folderl.split(os.sep)[-1].replace('-', '')
         family_code = device_folderl.split(os.sep)[-1][0:2]
         bbb = bytearray.fromhex(hex_id)
-        if USE_SHORT_SENSOR_NAMES:
+        if USE_SHORT_SENSOR_NAMES and family_code != "3b":
             sensor_name = "DS" + str(sum(bbb) % 256)
+        elif  USE_SHORT_SENSOR_NAMES and family_code == "3b":
+            sensor_name = "MAX" + str(sum(bbb) % 256)
         else:
             sensor_name = one_wire_temperature.FAMILY_CODES[family_code] + '_' + str(sum(bbb) % 256)
         return (
@@ -179,10 +181,10 @@ class one_wire_temperature():
         )
 
     def thermoelement_type_K_linearization(self, temp):
-        ''' physical linearization table for type K thermocouples based on ITS-90 standards 
-        required for measurement <-20°C and >+140°C 
-        Works by looking up the next lower 10°C value and then doing interpolation 
-        of the correction in the interval to the next higher 10°C step. 
+        ''' physical linearization table for type K thermocouples based on ITS-90 standards
+        required for measurement <-20°C and >+140°C
+        Works by looking up the next lower 10°C value and then doing interpolation
+        of the correction in the interval to the next higher 10°C step.
         '''
         K_linearization_lookup_table = (
             (-210, -63.79),
@@ -358,7 +360,7 @@ class one_wire_temperature():
         return temp_linearized
 
     def _read_temp_raw(self, device_folderl):
-        '''acces and read device dir'''
+        '''access and read device dir'''
         device_file = device_folderl + os.sep + 'w1_slave'
         with open(device_file, 'r', encoding=ENCODING) as f:
             lines = f.readlines()
@@ -417,7 +419,7 @@ def truncate_log_top(log_file_namel):
 # ------------ init  -------------------------------
 
 parser = argparse.ArgumentParser(
-    description="Ekkehard's 1wire temp logger for RaspberryPi",
+    description="Ekkehard's 1wire temperature logger for RaspberryPi/Linux",
     epilog="Use -q for crontab jobs", formatter_class=argparse.RawTextHelpFormatter)  # init object
 
 # ---------- define arguments
@@ -496,7 +498,7 @@ try:  # -------- outer error handler loop -------------------
             elif USE_LOCAL_time_with_UTC_offset:
                 date_str = str(datetime.now().astimezone().replace(microsecond=0).isoformat())
             else:
-                date_str = str(datetime.now().replace(microsecond=0).isoformat())  # local time 
+                date_str = str(datetime.now().replace(microsecond=0).isoformat())  # local time
 
             sensor_measurements = ''.join([sensor.get_measurement_str() for sensor in my_sensors])
 
