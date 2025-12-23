@@ -62,9 +62,9 @@ Notes
 
 you invoke the script as a cron job.
 
-4.) You might be interested to have a look at Timo Furrer's w1thermsenso package
+4.) You might be interested to have a look at [Timo Furrer's w1thermsenso package](https://pypi.org/project/w1thermsensor/)
 
-    https://pypi.org/project/w1thermsensor/ to learn about more sophisticated
+     to learn about more sophisticated
     
     techniques to interrogate 1Wire temperature sensors using the Linux kernel 
     
