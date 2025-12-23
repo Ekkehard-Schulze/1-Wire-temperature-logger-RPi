@@ -66,7 +66,7 @@ you invoke the script as a cron job.
 
 to learn about more sophisticated techniques to interrogate 1Wire temperature 
 
-sensors using the Linux kernel driver.
+sensors using the Linux kernel driver, which are actually not used here.
 
 
 
