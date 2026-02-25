@@ -84,3 +84,7 @@ was used to document mercury arc lamp usage in a lab for two years.
 Four type K thermocouples connected via 1-Wire bus to a RaspberryPi3B+ using MAX31850 amplifiers
 
 allow to measure temperatures ranging from -200°C to 1200°C with the MAX31850 interface.
+
+![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/plots_and_statistics_of_time_series.py_screenshot.webp)
+
+Screenshot of data visualized using the script plots_and_statistics_of_time_series.py.
