@@ -13,9 +13,9 @@ Features
 - You can connect different types of sensors to the same bus. 
 
 - Kernel supported 1-Wire temperature sensor types are:
-  - DS18S20     ±0.5°C Accuracy from -10°C to +85°C (obsolete)
-  - DS1822  
-  - DS18B20     ±0.5°C Accuracy from -10°C to +85°C 
+  - DS18B20     ±0.5°C accuracy from -10°C to +85°C 
+  - DS18S20     ±0.5°C accuracy from -10°C to +85°C (obsolete)
+  - DS1822      ±2.0°C accuracy from -10°C to +85°C
   - DS28EA00 
   - MAX31850    ±2°C for temperatures  -200°C to +700°C
   - DS1825  
