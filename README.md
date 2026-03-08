@@ -32,15 +32,7 @@ For example, this crontab line invokes a data frame recording every 15 minutes:
 
 - A further script provides graphical data analyzis and statistics.
 
-- The 1-Wire bus can power sensors using 'external power'
-(three wires) or 'parasite power' (two wires).
-This script was only tested using external power.
-- To use 1-Wire sensors with a Raspberry Pi, activate the 1-Wire bus 
-via raspi-config. The default Raspberry Pi GPIO pin for 
 
-1-Wire communication is GPIO4. You need a 4.7kΩ resistor 
-
-between the data line and 3.3 volt. 
 
 
 
@@ -48,6 +40,14 @@ between the data line and 3.3 volt.
 
 Notes
 -------
+1. To use 1-Wire sensors with a Raspberry Pi, activate the 1-Wire bus 
+via raspi-config. The default Raspberry Pi GPIO pin for 
+1-Wire communication is GPIO4. You need a 4.7kΩ resistor 
+between the data line and 3.3 volt. 
+
+2. The 1-Wire bus can power sensors using 'external power'
+(three wires) or 'parasite power' (two wires).
+This script was only tested using external power.
 
 1. To see the command line options use './1-Wire-temperature-logger-RPi.pyw -h'
 
