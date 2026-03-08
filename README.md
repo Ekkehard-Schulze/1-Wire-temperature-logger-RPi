@@ -22,7 +22,7 @@ whereas the others are semiconductor sensors.
 ISO 8601 date and time. This format is compatible with python's pandas 
 and plotly packages as well as with spreadsheet processing. 
 
-- The script either logs temperature measurements with its own timer,-
+- The script either logs temperature measurements with its own timer,
 or, alternatively, records a single data frame, suitable for periodic 
 calls by the cron deamon.
 
