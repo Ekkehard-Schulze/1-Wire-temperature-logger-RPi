@@ -21,6 +21,7 @@ supports 1-Wire sensor types
   - DS28EA00 
   - MAX31850    ±2°C for temperatures  -200°C to +700°C
   - DS1825  
+
 The latter two read type K thermocouples,
 whereas the others are semiconductor sensors.
 
