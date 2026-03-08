@@ -14,9 +14,18 @@ Features
 
 
 - The kernel 
-supports 1-Wire sensor types DS18S20, DS1822, DS18B20,  DS28EA00,
-MAX31850, and DS1825. The latter two read type K thermocouples,
+supports 1-Wire sensor types 
+  - DS18S20     ±0.5°C Accuracy from -10°C to +85°C (obsolete)
+  - DS1822  
+  - DS18B20     ±0.5°C Accuracy from -10°C to +85°C 
+  - DS28EA00 
+  - MAX31850    ±2°C for temperatures  -200°C to +700°C
+  - DS1825  
+The latter two read type K thermocouples,
 whereas the others are semiconductor sensors.
+
+
+
 
 - The script writes a tab separated value formated text file with 
 ISO 8601 date and time. This format is compatible with python's pandas 
