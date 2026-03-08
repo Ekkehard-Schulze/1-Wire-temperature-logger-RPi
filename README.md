@@ -20,7 +20,7 @@ Features
   - MAX31850    ±2°C for temperatures  -200°C to +700°C
   - DS1825  
 
-&emsp;&emsp;The latter two read type K thermocouples,
+&emsp;&emsp;&emsp;&emsp;The latter two read type K thermocouples,
 whereas all others are semiconductor sensors.
 
 - The script writes a tab separated value formated text file with 
