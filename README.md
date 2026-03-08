@@ -15,7 +15,7 @@ Features
 
 - The kernel 
 supports 1-Wire sensor types 
-  - DS18S20     ±0.5°C Accuracy from -10°C to +85°C (obsolete)
+  - DS18S20===±0.5°C Accuracy from -10°C to +85°C (obsolete)
   - DS1822  
   - DS18B20     ±0.5°C Accuracy from -10°C to +85°C 
   - DS28EA00 
