@@ -1,7 +1,11 @@
 1-Wire temperature logger for Linux systems
 ===========================================
 
-This Python script uses the Linux kernel driver for temperature readings. 
+This Python script was used on a RaspberryPi4 to document the usage of multiple mercury arc lamps.
+It uses the Linux kernel driver for temperature readings and the
+cron-daemon for timing. It successfully run for two years as a cron-job without user intervention.
+
+
 
 Features
 --------
