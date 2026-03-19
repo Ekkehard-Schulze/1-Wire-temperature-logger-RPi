@@ -1,9 +1,9 @@
 1-Wire temperature logger for Linux systems
 ===========================================
-
-This Python script was used on a RaspberryPi4 to document the usage of multiple mercury arc lamps.
+The One-Wire bus allows to attach multiple sensors to a long 3-wire cable.
+This Python script was used on a RaspberryPi4 to document the usage of multiple mercury arc lamps in a laboratory,
 It uses the Linux kernel driver for temperature readings and the
-cron-daemon for timing. It successfully run for two years as a cron-job without user intervention.
+cron-daemon for timing. It successfully run for two years without user intervention.
 
 
 
