@@ -185,6 +185,7 @@ class one_wire_temperature():
         required for measurement <-20°C and >+140°C
         Works by looking up the next lower 10°C value and then doing interpolation
         of the correction in the interval to the next higher 10°C step.
+        see https://its90.nist.gov/ and https://its90.nist.gov/downloadFiles/type_k.tab.txt
         '''
         K_linearization_lookup_table = (
             (-210, -63.79),
