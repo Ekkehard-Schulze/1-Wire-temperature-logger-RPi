@@ -27,8 +27,8 @@ Features
 &emsp;&emsp;&emsp;The latter two read type K thermocouples,
 whereas all others are semiconductor sensors.
 
-- for type K thermocouples a correction according to the ITS-90 standard
-  is provided. This substatially improves the accuracy at extreme temperatures.
+- For type K thermocouples a correction according to the ITS-90 standard
+  is provided. This substantially improves the accuracy at extreme temperatures.
 
 - The script writes a tab separated value formated text file with 
 ISO 8601 date and time. This format is compatible with python's pandas 
