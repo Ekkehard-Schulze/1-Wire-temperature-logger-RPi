@@ -3,7 +3,7 @@
 The One-Wire bus allows to attach multiple sensors to a many meter long 3-wire cable.
 This script uses the Linux kernel driver for temperature readings and the
 cron-daemon for timing. It was used on a Raspberry Pi 4 to document the usage of multiple mercury arc lamps in a laboratory
-for two years without user intervention. The Linux operating system provided continous network
+for two years without user intervention. The Linux operating system provides continous network
 access to the collected data. The aim of this script is to produce robust function with a minimum amount of code.
 
 
