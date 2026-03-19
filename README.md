@@ -58,7 +58,7 @@ This script was only tested using external power.
 
 1. To see the command line options use './1-Wire-temperature-logger-RPi.pyw -h'
 
-2. Read the 'user settings' (lines 87 to 130) and modify these according to your needs.
+2. Read the 'user settings' (lines 85 to 133) and modify these according to your needs.
 
 3. The file name extension '.pyw' prevents the opening of a terminal window in case
 you invoke the script as a cron job.
