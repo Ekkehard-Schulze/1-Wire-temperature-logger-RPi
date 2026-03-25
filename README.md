@@ -2,7 +2,7 @@
 ===========================================
 This script was used on a Raspberry Pi 4 to document the usage of multiple mercury arc lamps in a laboratory
 for two years without operator intervention. The Linux operating system provides continous network
-access to the collected data. The aim of this script is to produce robust function with a minimum amount of code.
+access to the collected data.
 
 
 Features
