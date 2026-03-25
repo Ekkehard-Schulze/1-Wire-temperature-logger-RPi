@@ -14,7 +14,7 @@ Features
 
 - The Linux kernel auto-discovers 1-Wire temperature sensors on startup.
 
-- You can connect different types of sensors to the same bus. 
+- The Linux kernel accepts multiple types of sensors on the same bus. 
 
 - Kernel supported 1-Wire temperature sensor types are:
   - DS18B20     ±0.5°C accuracy from -10°C to +85°C 
@@ -30,11 +30,11 @@ whereas all others are semiconductor sensors.
 - For type K thermocouples a correction according to the ITS-90 standard
   is provided. This substantially improves the accuracy at extreme temperatures.
 
-- The script writes a tab separated value formated text file with 
+- Writes data in a tab separated value formated text file with 
 ISO 8601 date and time. This format is compatible with python's pandas 
 and plotly packages as well as with spreadsheet processing. 
 
-- The script either logs temperature measurements with its own timer,
+- Logs temperature measurements with its own timer,
 or, alternatively, records a single data frame, suitable for periodic 
 calls by the cron deamon. This example crontab line invokes a data frame recording every 15 minutes: 
 
