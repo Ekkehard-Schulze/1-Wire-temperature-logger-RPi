@@ -28,7 +28,7 @@ whereas all others are semiconductor sensors.
 - For type K thermocouples a linearization correction according to the ITS-90 standard
   is provided. This substantially improves the accuracy below -30 °C and above 600 °C.
 
-- Writes data zo tab separated value table with 
+- Writes data to tab separated value table with 
 ISO 8601 formatted date and time. This is compatible with python's pandas 
 and plotly packages as well as with spreadsheet processing. 
 
