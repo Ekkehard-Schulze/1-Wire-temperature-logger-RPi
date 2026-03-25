@@ -25,7 +25,7 @@ Features
 &emsp;&emsp;&emsp;The latter two read type K thermocouples,
 whereas all others are semiconductor sensors.
 
-- Linearization correction for type K thermocouples improves the accuracy at extreme temperatures, e. g. below -30 °C or above 600 °C
+- Linearization for type K thermocouples allows measurements at temperatures below -30 °C or above 600 °C
 
 - Writes data to tab separated value table with 
 ISO 8601 formatted date and time. This is compatible with python's pandas 
