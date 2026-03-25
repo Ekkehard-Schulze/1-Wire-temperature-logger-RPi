@@ -12,9 +12,7 @@ Features
 
 - Auto-discovery of sensors on startup
 
-- Mixed usage of sensor types
-
-- Kernel supported 1-Wire temperature sensor types:
+- Mixed usage of sensor types:
   - DS18B20     ±0.5°C accuracy from -10°C to +85°C 
   - DS18S20     ±0.5°C accuracy from -10°C to +85°C (obsolete)
   - DS1822      ±2.0°C accuracy from -10°C to +85°C
