@@ -26,15 +26,15 @@ Features
 whereas all others are semiconductor sensors.
 
 - For type K thermocouples a linearization correction according to the ITS-90 standard
-  is provided. This substantially improves the accuracy at extreme temperatures.
+  is provided. This substantially improves the accuracy below -30 °C and above 600 °C.
 
-- Writes data in a tab separated value formated text file with 
-ISO 8601 date and time. This format is compatible with python's pandas 
+- Writes data zo tab separated value table with 
+ISO 8601 formatted date and time. This is compatible with python's pandas 
 and plotly packages as well as with spreadsheet processing. 
 
 - Logs temperature measurements with its own timer,
-or, alternatively, records a single data frame, suitable for periodic 
-calls by the cron deamon. This example crontab line invokes a data frame recording every 15 minutes: 
+or, preferrably, records a single data frame when called 
+by the Linux cron deamon. E. g. this example crontab line invokes a data frame recording every 15 minutes: 
 
 &emsp;&emsp;*/15  * * * *    /home/user_name/bin/1-Wire-temperature-logger-RPi.pyw -q    >/dev/null 2>>/dev/null
 
