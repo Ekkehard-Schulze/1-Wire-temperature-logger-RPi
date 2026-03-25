@@ -27,7 +27,7 @@ Features
 &emsp;&emsp;&emsp;The latter two read type K thermocouples,
 whereas all others are semiconductor sensors.
 
-- For type K thermocouples a correction according to the ITS-90 standard
+- For type K thermocouples a linearization correction according to the ITS-90 standard
   is provided. This substantially improves the accuracy at extreme temperatures.
 
 - Writes data in a tab separated value formated text file with 
