@@ -8,13 +8,13 @@ access to the collected data.
 Features
 --------
 
-- 1-Wire bus enables multiple temperature sensors on a single long cable.
+- multiple temperature sensors on a single long cable
 
-- Linux kernel auto-discovers 1-Wire temperature sensors on startup.
+- auto-discovery of sensors on startup
 
-- Accepts multiple types of sensors on the same bus. A mixed setup is possible.
+- multiple types of sensors can be combined
 
-- Kernel supported 1-Wire temperature sensor types are:
+- Kernel supported 1-Wire temperature sensor types
   - DS18B20     ±0.5°C accuracy from -10°C to +85°C 
   - DS18S20     ±0.5°C accuracy from -10°C to +85°C (obsolete)
   - DS1822      ±2.0°C accuracy from -10°C to +85°C
