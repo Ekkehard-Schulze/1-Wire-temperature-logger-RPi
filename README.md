@@ -12,7 +12,7 @@ Features
 
 - The Linux kernel auto-discovers 1-Wire temperature sensors on startup.
 
-- The Linux kernel accepts multiple types of sensors on the same bus. 
+- Accepts multiple types of sensors on the same bus. A mixed setup is possible.
 
 - Kernel supported 1-Wire temperature sensor types are:
   - DS18B20     ±0.5°C accuracy from -10°C to +85°C 
