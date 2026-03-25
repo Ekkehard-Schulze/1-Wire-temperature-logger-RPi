@@ -1,7 +1,7 @@
 1-Wire temperature logger for Linux systems
 ===========================================
 This script was used on a Raspberry Pi 4 to document the usage of multiple mercury arc lamps in a laboratory
-for two years without operator intervention. The Linux system provides continuous network
+for two years without operator intervention. The Linux system provided continuous network
 access to the collected data.
 
 
@@ -23,7 +23,7 @@ Features
 &emsp;&emsp;&emsp;The latter two read type K thermocouples,
 whereas all others are semiconductor sensors.
 
-- Linearization for type K thermocouples according ITS-90 allows measurements at temperatures below -30 °C or above 600 °C
+- Linearization for type K thermocouples according ITS-90 allows measurements at temperatures below -30 °C or above +600 °C
 
 - Writes data to tab separated value table with 
 ISO 8601 formatted date and time. This is compatible with python's pandas 
