@@ -1,7 +1,7 @@
 1-Wire temperature logger for Linux systems
 ===========================================
 This script was used on a Raspberry Pi 4 to document the usage of multiple mercury arc lamps in a laboratory
-for two years without operator intervention. The Linux operating system provides continuous network
+for two years without operator intervention. The Linux system provides continuous network
 access to the collected data.
 
 
