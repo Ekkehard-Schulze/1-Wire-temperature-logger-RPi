@@ -8,9 +8,9 @@ access to the collected data.
 Features
 --------
 
-- The 1-Wire bus enables multiple temperature sensors on a single long cable.
+- 1-Wire bus enables multiple temperature sensors on a single long cable.
 
-- The Linux kernel auto-discovers 1-Wire temperature sensors on startup.
+- Linux kernel auto-discovers 1-Wire temperature sensors on startup.
 
 - Accepts multiple types of sensors on the same bus. A mixed setup is possible.
 
