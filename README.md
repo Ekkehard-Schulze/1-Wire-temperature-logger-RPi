@@ -8,11 +8,11 @@ access to the collected data.
 Features
 --------
 
-- multiple temperature sensors on a single long cable
+- Multiple temperature sensors on a single long cable
 
-- auto-discovery of sensors on startup
+- Auto-discovery of sensors on startup
 
-- mixd usage of sensor types
+- Mixd usage of sensor types
 
 - Kernel supported 1-Wire temperature sensor types:
   - DS18B20     ±0.5°C accuracy from -10°C to +85°C 
@@ -25,7 +25,7 @@ Features
 &emsp;&emsp;&emsp;The latter two read type K thermocouples,
 whereas all others are semiconductor sensors.
 
-- linearization correction for type K thermocouples improves the accuracy at extreme temperatures, e. g. below -30 °C or above 600 °C
+- Linearization correction for type K thermocouples improves the accuracy at extreme temperatures, e. g. below -30 °C or above 600 °C
 
 - Writes data to tab separated value table with 
 ISO 8601 formatted date and time. This is compatible with python's pandas 
