@@ -21,7 +21,7 @@ Features
 &emsp;&emsp;&emsp;The latter two read type K thermocouples,
 whereas all others are semiconductor sensors.
 
-- Linearization for type K thermocouples according ITS-90 allows measurements at temperatures below -30 °C and above +600 °C
+- Linearization for type K thermocouples according ITS-90 enables measurements at temperatures below -30 °C and above +600 °C
 
 - Writes data to tab separated value table with 
 ISO 8601 formatted date and time. This is compatible with python's pandas 
@@ -33,7 +33,7 @@ by the Linux cron deamon. This example crontab line invokes a data frame recordi
 
 &emsp;&emsp;*/15  * * * *    /home/user_name/bin/1-Wire-temperature-logger-RPi.pyw -q    >/dev/null 2>>/dev/null
 
-- A further script provides graphical data analyzis and statistics.
+- Another script provides graphical data analyzis and statistics.
 
 
 
