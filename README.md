@@ -15,7 +15,7 @@ Features
   - DS18S20     ±0.5°C accuracy from -10°C to +85°C (obsolete)
   - DS1822      ±2.0°C accuracy from -10°C to +85°C
   - DS28EA00 
-  - MAX31850    ±2°C for temperatures  -200°C to +1200 °C
+  - MAX31850    ±2°C for temperatures -200°C to +1200 °C
   - DS1825  
 
 &emsp;&emsp;&emsp;The latter two read type K thermocouples,
@@ -58,7 +58,7 @@ This script was only tested using external power.
 
 3. The file name extension '.pyw' prevents the opening of a terminal window when running the script as a cron job. 
 
-4. For advanced usage of 1Wire temperature sensors with the Linux kernel driver study [Timo Furrer's w1thermsenso package](https://pypi.org/project/w1thermsensor/). This package is not used used here.
+4. For advanced usage of 1Wire temperature sensors with the Linux kernel driver study [Timo Furrer's w1thermsenso package](https://pypi.org/project/w1thermsensor/). This package is not used here.
 
 
 
