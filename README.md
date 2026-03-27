@@ -78,4 +78,4 @@ temperatures ranging from -200°C to 1200°C.
 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/plots_and_statistics_of_time_series.py_screenshot.webp)
 
-Screenshot of data visualizing from the script plots_and_statistics_of_time_series.py.
+Screenshot of interactive data visualization from the script plots_and_statistics_of_time_series.py.
