@@ -18,8 +18,8 @@ Features
   - MAX31850    ±2°C for temperatures -200°C to +1200 °C
   - DS1825  
 
-&emsp;&emsp;&emsp;The latter two read type K thermocouples,
-whereas all others are semiconductor sensors.
+&emsp;&emsp;&emsp;The latter two read type K thermocouples;
+ all others are semiconductor thermometers.
 
 - Linearization for type K thermocouples according ITS-90 enables measurements at temperatures below -30 °C and above +600 °C
 
