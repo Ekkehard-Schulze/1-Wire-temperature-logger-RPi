@@ -58,7 +58,7 @@ This script was only tested using external power.
 
 3. The file name extension '.pyw' prevents the opening of a terminal window when running the script as a cron job. 
 
-4. For advanced methods to interrogate 1Wire temperature sensors with the Linux kernel driver study [Timo Furrer's w1thermsenso package](https://pypi.org/project/w1thermsensor/). This package is not used used here.
+4. For advanced usage of 1Wire temperature sensors with the Linux kernel driver study [Timo Furrer's w1thermsenso package](https://pypi.org/project/w1thermsensor/). This package is not used used here.
 
 
 
