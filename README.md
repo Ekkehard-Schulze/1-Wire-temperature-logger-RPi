@@ -56,7 +56,7 @@ This script was only tested using external power.
 
 2. Read the 'user settings' (lines 85 to 133) and modify these according to your needs.
 
-3. The file name extension '.pyw' prevents the opening of a terminal window when running the script as a cron job. 
+3. The file name ending '.pyw' prevents the opening of a terminal window when running the script as a cron job. 
 
 4. For advanced usage of 1Wire temperature sensors with the Linux kernel driver study [Timo Furrer's w1thermsenso package](https://pypi.org/project/w1thermsensor/). This package is not used here.
 
@@ -73,9 +73,8 @@ was used to document mercury arc lamp usage in a lab for two years.
 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/Raspi_with_typeK_thermocouples.jpg)
 
-Four type K thermocouples connected via 1-Wire bus to a RaspberryPi3B+ using MAX31850 amplifiers
-
-allow to measure temperatures ranging from -200°C to 1200°C.
+Four type K thermocouples connected via MAX31850 amplifiers to a RaspberryPi3B+ allow to measure 
+temperatures ranging from -200°C to 1200°C.
 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/plots_and_statistics_of_time_series.py_screenshot.webp)
 
