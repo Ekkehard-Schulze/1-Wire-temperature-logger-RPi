@@ -1,6 +1,6 @@
 1-Wire temperature logger for Linux systems
 ===========================================
-This script creates a text file with data and timestamp. It ran on a  Raspberry Pi and
+This script creates a text file with data and timestamp. It ran on a Raspberry Pi and
 documented mercury arc lamp usage in a laboratory for two years autonomously. The Linux system ensured continuous network access to the data.
 
 
