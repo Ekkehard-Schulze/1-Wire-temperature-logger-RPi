@@ -66,7 +66,7 @@ This script was only tested using external power.
 Images
 -------
 
-![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/Raspi_with_1Wire_bus.jpg)
+![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/Raspi_with_1-Wire_bus.jpg)
 
 An eight-meter long 1-Wire bus cable with six DS18B20 sensors connected to a RaspberryPi3B+
 
