@@ -9,7 +9,7 @@ Features
 
 - Multiple temperature sensors on a single long cable
 
-- Auto-discovery of sensors on startup
+- Auto-discovery of sensors on system startup
 
 - Mixed usage of sensor types:
   - DS18B20     ±0.5°C accuracy from -10°C to +85°C 
@@ -59,7 +59,7 @@ This script was only tested using external power.
 
 3. The file name ending '.pyw' prevents the opening of a terminal window when running the script as a cron job. 
 
-4. For advanced usage of 1Wire temperature sensors with the Linux kernel driver study [Timo Furrer's w1thermsenso package](https://pypi.org/project/w1thermsensor/). This package is not used here.
+4. For advanced usage of 1-Wire temperature sensors with the Linux kernel driver study [Timo Furrer's w1thermsenso package](https://pypi.org/project/w1thermsensor/). This package is not used here.
 
 
 
