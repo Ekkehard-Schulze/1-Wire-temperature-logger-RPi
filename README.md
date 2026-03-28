@@ -66,17 +66,17 @@ This script was only tested using external power.
 Images
 -------
 
-![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/Raspi_with_1-Wire_bus.jpg)
+![Sensor chan](https://github.com/Ekkehard-Schulze/1-Wire-temperature-logger-RPi/blob/main/images/Raspi_with_1-Wire_bus.jpg)
 
 An eight-meter long 1-Wire bus cable with six DS18B20 sensors connected to a RaspberryPi3B+
 
 was used to document mercury arc lamp usage in a lab for two years.
 
-![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/Raspi_with_typeK_thermocouples.jpg)
+![Sensor chan](https://github.com/Ekkehard-Schulze/1-Wire-temperature-logger-RPi/blob/main/images/Raspi_with_typeK_thermocouples.jpg)
 
 Four type K thermocouples connected via MAX31850 amplifiers to a RaspberryPi3B+ allow to measure 
 temperatures ranging from -200°C to 1200°C.
 
-![Sensor chan](https://github.com/Ekkehard-Schulze/1wire-temperature-logger-RPi/blob/main/images/plots_and_statistics_of_time_series.py_screenshot.webp)
+![Sensor chan](https://github.com/Ekkehard-Schulze/1-Wire-temperature-logger-RPi/blob/main/images/plots_and_statistics_of_time_series.py_screenshot.webp)
 
 Screenshot of interactive data visualization from the script plots_and_statistics_of_time_series.py.
