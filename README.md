@@ -1,6 +1,6 @@
 1-Wire temperature logger for Linux systems
 ===========================================
-Creates a text file with data and timestamps. It autonomously documented mercury arc lamp usage in a lab for two years. The Linux system ensures constant network access and stable operation.
+Creates a text file with data and timestamps. It autonomously documented mercury arc lamp usage in a lab for two years. The Linux operating system ensures constant network access and stable operation.
 
 
 Features
