@@ -531,8 +531,16 @@ except KeyboardInterrupt:
 except Exception as e:
     if LOG_EXCEPTIONS_TO_FILE:
         with open(LOGGER_DATA_DIR + os.sep + LOG_EXCEPTIONS_FILE_NAME, "a", encoding=ENCODING) as except_log_file:
-            except_log_file.write('\n' + str(e) + ' in line ' + str(e.__traceback__.tb_lineno) + '\n')
-            except_log_file.write('-' * 70 + '\n')
+            except_log_file.write(
+                "\n"
+                + datetime.now().isoformat(sep=" ", timespec="seconds")
+                + ": "
+                + str(e)
+                + " in line "
+                + str(e.__traceback__.tb_lineno)
+                + "\n"
+            )            
+            except_log_file.write('-'*70+'\n')
             except_log_file.write(traceback.format_exc())
         if str(e) == 'File header not matching sensors detected':
             raise
