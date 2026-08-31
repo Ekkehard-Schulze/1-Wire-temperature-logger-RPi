@@ -67,9 +67,7 @@ Images
 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/1-Wire-temperature-logger-RPi/blob/main/images/Raspi_with_1-Wire_bus.jpg)
 
-An eight-meter long 1-Wire bus cable with six DS18B20 sensors connected to a RaspberryPi3B+
-was used to document mercury arc lamp usage in a lab for two years. Neodymium magnets were used to 
-attach the temperature sensors to the equipment.
+An eight-meter long 1-Wire bus cable with six DS18B20 sensors connected to a RaspberryPi3B+ was used to document mercury arc lamp usage in a lab for two years. Neodymium magnets were used to attach the temperature sensors to the equipment.
 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/1-Wire-temperature-logger-RPi/blob/main/images/Raspi_with_typeK_thermocouples.jpg)
 
