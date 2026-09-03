@@ -23,9 +23,9 @@ Features
 
 - Linearization for type K thermocouples according ITS-90 enables measurements at temperatures below -30 °C and above +600 °C
 
-- Writes data to a tab-separated values table using ISO 8601-formatted dates and times. The resulting file is fully compatible with spreadsheet software and Python data libraries, including pandas and plotly.
-
 - Preferably, the system records a data frame when called by the Linux cron daemon; otherwise, it logs temperature measurements using its own timer.
+
+- Writes data to a tab-separated values table using ISO 8601-formatted dates and times. The resulting file is fully compatible with spreadsheet software and Python data libraries, including pandas and plotly.
 
 - Another script provides graphical data analyzis and statistics.
 
