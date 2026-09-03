@@ -27,6 +27,8 @@ Features
 ISO 8601 formatted date and time. This is compatible with python's pandas 
 and plotly packages as well as with spreadsheet processing. 
 
+- Writes data to a tab-separated values table using ISO 8601-formatted dates and times. The resulting file is fully compatible with spreadsheet software and Python data libraries, including pandas and plotly.
+
 - Preferably, the system records a data frame when called by the Linux cron daemon; otherwise, it logs temperature measurements using its own timer.
 
 - Another script provides graphical data analyzis and statistics.
