@@ -27,11 +27,7 @@ Features
 ISO 8601 formatted date and time. This is compatible with python's pandas 
 and plotly packages as well as with spreadsheet processing. 
 
-- Preferably, the system records a data frame when called by the Linux cron daemon; otherwise, it logs temperature measurements using its own timer. This example crontab line invokes a data frame recording every 15 minutes: 
-
-
-
-&emsp;&emsp;*/15  * * * *    /home/user_name/bin/1-Wire-temperature-logger-RPi.pyw -q    >/dev/null 2>>/dev/null
+- Preferably, the system records a data frame when called by the Linux cron daemon; otherwise, it logs temperature measurements using its own timer.
 
 - Another script provides graphical data analyzis and statistics.
 
