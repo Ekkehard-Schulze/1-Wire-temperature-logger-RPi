@@ -69,4 +69,4 @@ Four Type K thermocouples, connected via MAX31850 amplifiers to a Raspberry Pi 3
 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/1-Wire-temperature-logger-RPi/blob/main/images/plots_and_statistics_of_time_series.py_screenshot.webp)
 
-Screenshot of interactive data visualization from the script plots_and_statistics_of_time_series.py.
+Screenshot of interactive data visualization using the script plots_and_statistics_of_time_series.py.
