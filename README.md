@@ -1,6 +1,6 @@
 1-Wire temperature logger for Linux systems
 ===========================================
-Requires a kernel driver for 1-Wire hardware. It creates a text file with temperature data and timestamps. This script has documented mercury arc lamp usage in a lab for two years. The Linux operating system ensures unattended, long-term, stable operations and network access.
+Requires a kernel driver for 1-Wire hardware. It creates a text file with temperature data and timestamps. This script has documented mercury arc lamp usage in a lab for two years. The Linux operating system ensures unattended, long-term, stable operations and network access to the data.
 
 
 Features
