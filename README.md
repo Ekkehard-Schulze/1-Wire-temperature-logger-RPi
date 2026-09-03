@@ -37,16 +37,15 @@ Features
 
 Notes
 -------
-1. To use 1-Wire sensors with a Raspberry Pi, activate the 1-Wire bus 
-via raspi-config. The default Raspberry Pi GPIO pin for 
-1-Wire communication is GPIO4. Add a 4.7kΩ resistor 
-between the data line and 3.3 volt. 
+1. To use 1-Wire sensors with a Raspberry Pi, enable the 1-Wire bus via raspi-config. The default 
+pin for 1-Wire communication is GPIO4. Connect a 4.7 kΩ pull-up 
+resistor between the data line and the 3.3 V supply.
 
 2. The 1-Wire bus can power sensors using 'external power'
 (three wires) or 'parasite power' (two wires).
 This script was only tested using external power.
 
-1. To see the command line options use './1-Wire-temperature-logger-RPi.pyw -h'
+1. To view the available command-line options run './1-Wire-temperature-logger-RPi.pyw -h'
 
 2. Read the 'user settings' (lines 85 to 133) and modify these according to your needs.
 
