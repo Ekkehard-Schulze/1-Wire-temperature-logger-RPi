@@ -48,9 +48,9 @@
 
   This script can iterate unlimited periodic measurements.
 
-  Alternatively, it can be used for a single dataframe reading
+  Alternatively, it can be used for a single data frame reading
 
-  triggered by the crontab deamon. The latter is recomendet
+  triggered by the crontab daemon. The latter is recommended
 
   for indefinite measurements with larger time intervals.
 
