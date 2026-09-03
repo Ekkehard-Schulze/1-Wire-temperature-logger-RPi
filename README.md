@@ -31,6 +31,11 @@ and plotly packages as well as with spreadsheet processing.
 or, alternatively, records a single data frame when called 
 by the Linux cron deamon. This example crontab line invokes a data frame recording every 15 minutes: 
 
+
+- Appends the log file with a single data frame when called by the Linux cron deamon. This example crontab line invokes a data frame recording every 15 minutes: 
+
+
+
 &emsp;&emsp;*/15  * * * *    /home/user_name/bin/1-Wire-temperature-logger-RPi.pyw -q    >/dev/null 2>>/dev/null
 
 - Another script provides graphical data analyzis and statistics.
