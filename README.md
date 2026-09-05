@@ -15,7 +15,7 @@ Features
   - DS18S20     ±0.5°C accuracy from -10°C to +85°C (obsolete)
   - DS1822      ±2.0°C accuracy from -10°C to +85°C
   - DS28EA00 
-  - MAX31850    ±2°C for temperatures -200°C to +1200 °C
+  - MAX31850    for temperatures ranging from -200°C to +1200 °C, accuracy worse then ±2.0°C
   - DS1825  
 
 &emsp;&emsp;&emsp;The latter two read type K thermocouples;
