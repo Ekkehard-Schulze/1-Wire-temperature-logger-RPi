@@ -25,7 +25,7 @@ Features
 
 - Preferably, the system records a data frame when called by the Linux cron daemon; otherwise, it logs temperature measurements using its own timer.
 
-- Writes data to a tab-separated values table using ISO 8601-formatted dates and times. The resulting file is fully compatible with spreadsheet software and Python data libraries, including pandas and plotly.
+- Writes data to a TSV file with ISO 8601 timestamps. Fully compatible with Excel, Google Sheets, and Python (pandas).
 
 - Another script provides graphical data analyzis and statistics.
 
