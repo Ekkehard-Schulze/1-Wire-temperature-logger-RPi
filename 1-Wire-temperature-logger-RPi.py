@@ -441,8 +441,9 @@ LOGGER_DATA_DIR = os.path.expanduser(LOGGER_DATA_DIR) if "~" in LOGGER_DATA_DIR 
 if LOGGER_DATA_DIR != '' and write_log_data_to_file:
     os.makedirs(LOGGER_DATA_DIR, exist_ok=True)
 
-if (not os.path.isfile(LOGGER_DATA_DIR + os.sep + LOG_EXCEPTIONS_FILE_NAME)) and LOG_EXCEPTIONS_TO_FILE:
-    with open(LOGGER_DATA_DIR + os.sep + LOG_EXCEPTIONS_FILE_NAME, "a", encoding=ENCODING) as except_log_file:
+exceptions_file_path = f"{LOGGER_DATA_DIR}{os.sep}{LOG_EXCEPTIONS_FILE_NAME}"
+if (not os.path.isfile(exceptions_file_path)) and LOG_EXCEPTIONS_TO_FILE:
+    with open(exceptions_file_path, "a", encoding=ENCODING) as except_log_file:
         pass
 
 
@@ -462,18 +463,19 @@ try:  # -------- outer error handler loop -------------------
     if VERBOSE or write_log_data_to_file:
         print('\nSensor(s) ' + sens_header.replace(SEPARATOR, ' '))
 
+    log_file_path = f"{LOGGER_DATA_DIR}{os.sep}{LOG_FILE_NAME}"
     # ------------------- init log file  ------------------------
 
-    if not os.path.isfile(LOGGER_DATA_DIR + os.sep + LOG_FILE_NAME) and write_log_data_to_file:     # test for file presence to assure a single header line
-        with open(LOGGER_DATA_DIR + os.sep + LOG_FILE_NAME, "a", encoding=ENCODING) as log_file:    # use append mode to prevent deleting data. Append makes a new file if none exists.
+    if not os.path.isfile(log_file_path) and write_log_data_to_file:     # test for file presence to assure a single header line
+        with open(log_file_path, "a", encoding=ENCODING) as log_file:    # use append mode to prevent deleting data. Append makes a new file if none exists.
             log_file.write(
                 LOGGER_ID_field_name + SEPARATOR
                 + DATE_TIME_field_name
                 + sens_header + "\n"
             )
     # test if found log file header matches detected sensors
-    elif write_log_data_to_file and os.path.isfile(LOGGER_DATA_DIR + os.sep + LOG_FILE_NAME):
-        with open(LOGGER_DATA_DIR + os.sep + LOG_FILE_NAME, "r", encoding=ENCODING) as log_file:
+    elif write_log_data_to_file and os.path.isfile(log_file_path):
+        with open(log_file_path, "r", encoding=ENCODING) as log_file:
             file_head_line = log_file.readline()
         if file_head_line != LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header + "\n":
             raise HeaderMismatchError('File header not matching sensors detected')
@@ -484,7 +486,7 @@ try:  # -------- outer error handler loop -------------------
 
     # -------------- startup message file logging --------------------------
     if write_log_data_to_file:
-        print('\nData logging to ' + LOGGER_DATA_DIR + os.sep + LOG_FILE_NAME + ' in progess....')
+        print('\nData logging to ' + log_file_path + ' in progess....')
     print('Terminate with Strg+C')
 
     # ------------------- main loop ------------------------------------
@@ -512,10 +514,10 @@ try:  # -------- outer error handler loop -------------------
             if VERBOSE:
                 print(logline)
             if write_log_data_to_file:
-                with open(LOGGER_DATA_DIR + os.sep + LOG_FILE_NAME, "a", encoding=ENCODING) as log_file:
+                with open(log_file_path, "a", encoding=ENCODING) as log_file:
                     log_file.write(logline + "\n")
                 if MAX_LOG_SIZE:
-                    truncate_log_top(LOGGER_DATA_DIR + os.sep + LOG_FILE_NAME)
+                    truncate_log_top(log_file_path)
 
             if args.log_once:
                 sys.exit(0)
@@ -535,11 +537,11 @@ except Exception as e:
         # Safe traceback line extraction (handles cases where tb_lineno might be None)
         line_no = e.__traceback__.tb_lineno if e.__traceback__ else "unknown"
         timestamp = datetime.now().astimezone().isoformat(sep=" ", timespec="seconds")
-        
+
         with open(exceptions_file_path, "a", encoding=ENCODING) as except_log_file:
-            except_log_file.write(f"\n{timestamp}: {e} in line {line_no}\n")            
+            except_log_file.write(f"\n{timestamp}: {e} in line {line_no}\n")
             except_log_file.write('-' * 70 + '\n')
             except_log_file.write(traceback.format_exc())
-            
+
     if isinstance(e, HeaderMismatchError) or not LOG_EXCEPTIONS_TO_FILE:
         raise
