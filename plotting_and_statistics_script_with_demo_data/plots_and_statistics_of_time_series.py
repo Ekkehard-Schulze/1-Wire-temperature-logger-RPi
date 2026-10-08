@@ -48,12 +48,14 @@ non-iso accepted formats are:
 
 '''
 
-import re
 import os
-import sys
-import datetime
+
+# import datetime
 import pathlib
 import platform
+import re
+import sys
+
 import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
@@ -142,10 +144,11 @@ def bad_date_and_repeated_header_masker(linesl):
                 skiplinesl.append(ln)
         else:
             toplines = False  # first values found
-            if check_datetime and parse_for_bad_datelines:
-                if not re.search(date_pattern_c, l):
-                    skiplinesl.append(ln)
+            if check_datetime and parse_for_bad_datelines and not re.search(date_pattern_c, l):
+                skiplinesl.append(ln)
     return skiplinesl
+
+
 
 
 def main():
@@ -223,10 +226,8 @@ def main():
         sfile_name_ods = output_dir_with_path + add_prefix_to_file_stem_and_swap_extension(logger_tsv_file, prefix, ".ods") 
         sfile_name_tsv = output_dir_with_path + add_prefix_to_file_stem_and_swap_extension(logger_tsv_file, prefix, ".tsv")                
         df_stats = df.describe()
-        try:
-            df_stats = df_stats.drop(Date_time_field_name, axis=1)
-        except:
-            pass
+
+        df_stats = df_stats.drop(Date_time_field_name, axis=1, errors='ignore')
         df_stats['duration'] = log_duration
         try: # .csv
             df_stats.to_csv(sfile_name_tsv, index=True, sep=STATS_file_separator)
@@ -355,7 +356,7 @@ def main():
             my_ytick_font_size = 33                                  # my default is 20 for sparse plots, use 16 for very many plots
             my_xtick_font_size = 33                                   # my default is 20 for sparse plots, use 16 for very many plots
             # my_yaxes_title_font_size = 20           
-            fig_time.update_layout(xaxis=dict(tickfont = dict(size=my_xtick_font_size)), yaxis=dict(tickfont = dict(size=my_ytick_font_size)) )            
+            fig_time.update_layout(xaxis={"tickfont": {"size": my_xtick_font_size}}, yaxis={"tickfont": {"size": my_ytick_font_size}} )            
             fig_time.update_layout(width=width_l, height=height_l)
             #fig_time.update_layout(font=dict(family='Times New Roman',size=20,title=dict(font=dict(family='Ariel', size=33))))            
             fig_time.update_traces(marker={'size': 15})
@@ -364,9 +365,11 @@ def main():
             fig_time.update_yaxes(automargin=True, title_standoff = 33)            
             fig_time.write_image(png_name)             
 
-    if WRITE_LOG_data_as_EXCEL_file or WRITE_LOG_data_as_open_doc_ods_file:
-        if df[Date_time_field_name].dt.tz is not None:
-            df[Date_time_field_name] = df[Date_time_field_name].dt.tz_localize(None)  # remove timezone info for Excel      
+
+            fig_time.write_image(png_name)
+
+    if (WRITE_LOG_data_as_EXCEL_file or WRITE_LOG_data_as_open_doc_ods_file) and df[Date_time_field_name].dt.tz is not None:
+        df[Date_time_field_name] = df[Date_time_field_name].dt.tz_localize(None)  # remove timezone info for Excel
 
     if WRITE_LOG_data_as_EXCEL_file:
         print("Writing log data to EXCEL file...")        
