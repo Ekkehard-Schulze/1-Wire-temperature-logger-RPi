@@ -243,7 +243,8 @@ def main():
             sys.exit() 
         try: # .ods
             # df_stats.rename(columns={'duration': 'duration [d]'}, inplace=True)
-            df_stats.to_excel(sfile_name_ods, index=True, engine='odf')
+            df_stats.to_excel(sfile_name_ods, index=True, engine='odf')  # requires pip install odfpy
+                                                                         # import done by pandas
         except PermissionError:
             print('Failed to open statistics file.\nClose other application (e.g. Excel) blocking ' + sfile_name_ods + '\n')
             input('Press Enter to quit.')
@@ -375,8 +376,8 @@ def main():
     if WRITE_LOG_data_as_open_doc_ods_file:
         print("Writing log data to open document file...")        
         efile_name = output_dir_with_path + add_prefix_to_file_stem_and_swap_extension(logger_tsv_file, last_datetime_str + "_", ".ods")        
-        df.to_excel(efile_name, index=False, engine='odf')
-
+        df.to_excel(efile_name, index=False, engine='odf')  # requires pip install odfpy
+                                                            # import done by pandas
 
 if __name__ == '__main__':
     main()

@@ -74,13 +74,14 @@
 
 '''
 
+import argparse
+import glob
 import os
 import sys
 import time
-import glob
 import traceback
-import argparse
 from datetime import datetime, timezone
+from typing import ClassVar
 
 # ---------------------- user settings --------------------------
 
@@ -132,8 +133,11 @@ ENCODING = "utf-8"
 
 # ---------------------- end of user default settings --------------------------
 
+class HeaderMismatchError(Exception):
+    """Raised when the log file header does not match the detected sensors."""
 
-class one_wire_temperature():
+
+class one_wire_temperature:
     ''' ----------- sensor 1wire specific code for logger  ------------
     stores list of responding 1Wire temperature sensors.
     Retrieves sensor names and measurements of all sensors at once.
@@ -144,8 +148,7 @@ class one_wire_temperature():
     interesting: Maxim MAX31850 thermoelement interface is supported in addition to silicon based sensors
     '''
 
-    FAMILY_CODES = {
-
+    FAMILY_CODES: ClassVar[dict[str, str]] = {
         "10": "DS18S20",
         "22": "DS1822",
         "28": "DS18B20",
@@ -174,11 +177,8 @@ class one_wire_temperature():
             sensor_name = "MAX" + str(sum(bbb) % 256)
         else:
             sensor_name = one_wire_temperature.FAMILY_CODES[family_code] + '_' + str(sum(bbb) % 256)
-        return (
-            sensor_name_translation[sensor_name]
-            if sensor_name in sensor_name_translation
-            else sensor_name
-        )
+        return sensor_name_translation.get(sensor_name, sensor_name)
+
 
     def thermoelement_type_K_linearization(self, temp):
         ''' physical linearization table for type K thermocouples based on ITS-90 standards
@@ -476,7 +476,7 @@ try:  # -------- outer error handler loop -------------------
         with open(LOGGER_DATA_DIR + os.sep + LOG_FILE_NAME, "r", encoding=ENCODING) as log_file:
             file_head_line = log_file.readline()
         if file_head_line != LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header + "\n":
-            raise Exception('File header not matching sensors detected')
+            raise HeaderMismatchError('File header not matching sensors detected')
 
     # ----------------- init logger ----------------------------------
     starttime = time.monotonic()
@@ -499,7 +499,7 @@ try:  # -------- outer error handler loop -------------------
             elif USE_LOCAL_time_with_UTC_offset:
                 date_str = str(datetime.now().astimezone().replace(microsecond=0).isoformat())
             else:
-                date_str = str(datetime.now().replace(microsecond=0).isoformat())  # local time
+                date_str = str(datetime.now().astimezone().replace(microsecond=0, tzinfo=None).isoformat())
 
             sensor_measurements = ''.join([sensor.get_measurement_str() for sensor in my_sensors])
 
@@ -528,21 +528,18 @@ try:  # -------- outer error handler loop -------------------
 except KeyboardInterrupt:
     sys.exit('')
 
+
 except Exception as e:
+
     if LOG_EXCEPTIONS_TO_FILE:
-        with open(LOGGER_DATA_DIR + os.sep + LOG_EXCEPTIONS_FILE_NAME, "a", encoding=ENCODING) as except_log_file:
-            except_log_file.write(
-                "\n"
-                + datetime.now().isoformat(sep=" ", timespec="seconds")
-                + ": "
-                + str(e)
-                + " in line "
-                + str(e.__traceback__.tb_lineno)
-                + "\n"
-            )            
-            except_log_file.write('-'*70+'\n')
+        # Safe traceback line extraction (handles cases where tb_lineno might be None)
+        line_no = e.__traceback__.tb_lineno if e.__traceback__ else "unknown"
+        timestamp = datetime.now().astimezone().isoformat(sep=" ", timespec="seconds")
+        
+        with open(exceptions_file_path, "a", encoding=ENCODING) as except_log_file:
+            except_log_file.write(f"\n{timestamp}: {e} in line {line_no}\n")            
+            except_log_file.write('-' * 70 + '\n')
             except_log_file.write(traceback.format_exc())
-        if str(e) == 'File header not matching sensors detected':
-            raise
-    else:
+            
+    if isinstance(e, HeaderMismatchError) or not LOG_EXCEPTIONS_TO_FILE:
         raise
