@@ -1,0 +1,51 @@
+#[tool.ruff] # for pyproject.toml
+
+# check, do not change
+# --------------------
+# ruff check .
+# ruff format . --check
+
+# check and change
+# --------------------
+# ruff check --fix --unsafe-fixes
+# ruff format .
+
+# show settings
+# ruff check --show-settings
+
+# wichtig für MicroPython
+# target-version = "py38"
+
+# extend-exclude (which ensures you don't accidentally overwrite Ruff's default ignores like 
+extend-exclude = [
+    "z_older_versions",
+]
+
+# Set the maximum line length (matches Black's default of 88)
+line-length = 88
+
+
+#[tool.ruff.lint]  # for pyproject.toml
+[lint]             # for ruff.toml
+# 1. Select the rulesets you want to enforce
+select = [
+    "E",   # Style errors (pycodestyle)
+    "F",   # Logical flaws (Pyflakes)
+    "I",   # Import sorting (isort)
+    "UP",  # Modern Python upgrades (pyupgrade) # Achtung: das kann MicroPython inkompatibel sein!
+    "B",   # Common bug prevention (flake8-bugbear)
+    "SIM", # Code simplification advice (flake8-simplify)
+]
+
+# 2. Ignore specific rules you don't care about
+ignore = [
+    "E501", # Skip line-length errors (let the formatter handle it)
+]
+
+
+#[tool.ruff.format] # for pyproject.toml
+[format]            # for ruff.toml
+# Configure your code style preferences
+quote-style = "double"
+indent-style = "space"
+
