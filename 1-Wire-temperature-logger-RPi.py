@@ -94,12 +94,8 @@ sensor_name_translation = {  # used in a past project to generate explicit colum
     # 'DS140': "SZX12_L",
 }
 
-USE_UTC_time = (
-    True  # otherwise local time  (with or without UTC offset indication) is used
-)
-USE_LOCAL_time_with_UTC_offset = (
-    False  # otherwise UTC time or local time without ISO8601 offset is used
-)
+USE_UTC_time = True  # otherwise local time  (with or without UTC offset indication) is used
+USE_LOCAL_time_with_UTC_offset = False  # otherwise UTC time or local time without ISO8601 offset is used
 
 log_every_n_seconds = 15  # default value, may get changed by command line argument
 
@@ -118,7 +114,9 @@ USE_SHORT_SENSOR_NAMES = True  # short format is like DS133, long is indicating 
 
 VERBOSE = True  # print data to stdout
 
-LOG_EXCEPTIONS_TO_FILE = False  # attention: if set to True, you get no backtraces on the terminal, just the written file
+LOG_EXCEPTIONS_TO_FILE = (
+    False  # attention: if set to True, you get no backtraces on the terminal, just the written file
+)
 # intended for crontab jobs and for long unsupervised runs
 SEPARATOR = "\t"
 
@@ -181,11 +179,7 @@ class one_wire_temperature:
         elif USE_SHORT_SENSOR_NAMES and family_code == "3b":
             sensor_name = "MAX" + str(sum(bbb) % 256)
         else:
-            sensor_name = (
-                one_wire_temperature.FAMILY_CODES[family_code]
-                + "_"
-                + str(sum(bbb) % 256)
-            )
+            sensor_name = one_wire_temperature.FAMILY_CODES[family_code] + "_" + str(sum(bbb) % 256)
         return sensor_name_translation.get(sensor_name, sensor_name)
 
     def thermoelement_type_K_linearization(self, temp):
@@ -362,18 +356,11 @@ class one_wire_temperature:
         while temp >= K_linearization_lookup_table[i][0]:
             i += 1
         i -= 1
-        interval_for_interpolation = (
-            K_linearization_lookup_table[i + 1][1] - K_linearization_lookup_table[i][1]
-        )
+        interval_for_interpolation = K_linearization_lookup_table[i + 1][1] - K_linearization_lookup_table[i][1]
         Fraction = (temp - K_linearization_lookup_table[i][0]) / (
-            K_linearization_lookup_table[i + 1][0]
-            - (K_linearization_lookup_table[i][0])
+            K_linearization_lookup_table[i + 1][0] - (K_linearization_lookup_table[i][0])
         )
-        temp_linearized = (
-            temp
-            + (Fraction * interval_for_interpolation)
-            + K_linearization_lookup_table[i][1]
-        )
+        temp_linearized = temp + (Fraction * interval_for_interpolation) + K_linearization_lookup_table[i][1]
 
         return temp_linearized
 
@@ -430,9 +417,7 @@ def truncate_log_top(log_file_namel):
             open(log_file_namel, "w", encoding=ENCODING) as newfile,
         ):
             for n, line in enumerate(oldfile):
-                if (
-                    n == 0 or n > n_lines_to_delete
-                ):  # keep header, trucate top n data lines
+                if n == 0 or n > n_lines_to_delete:  # keep header, trucate top n data lines
                     newfile.write(line)
         os.remove(bak_file_name)
 
@@ -477,9 +462,7 @@ write_log_data_to_file = not args.do_not_write_log_file
 
 # -------------------  log dir and exceptions file  ------------------------
 
-LOGGER_DATA_DIR = (
-    os.path.expanduser(LOGGER_DATA_DIR) if "~" in LOGGER_DATA_DIR else LOGGER_DATA_DIR
-)
+LOGGER_DATA_DIR = os.path.expanduser(LOGGER_DATA_DIR) if "~" in LOGGER_DATA_DIR else LOGGER_DATA_DIR
 
 if LOGGER_DATA_DIR != "" and write_log_data_to_file:
     os.makedirs(LOGGER_DATA_DIR, exist_ok=True)
@@ -500,9 +483,7 @@ try:  # -------- outer error handler loop -------------------
 
     # sens_header = ''.join([SEPARATOR + sensor.get_sensor_headers()  for sensor in my_sensors])
 
-    sens_header = "".join(
-        [sensor.get_sensor_headers() for sensor in my_sensors]
-    )  # concat for multiple
+    sens_header = "".join([sensor.get_sensor_headers() for sensor in my_sensors])  # concat for multiple
     # heterogeneous sensor objects
     if VERBOSE or write_log_data_to_file:
         print("\nSensor(s) " + sens_header.replace(SEPARATOR, " "))
@@ -513,28 +494,15 @@ try:  # -------- outer error handler loop -------------------
     if (
         not os.path.isfile(log_file_path) and write_log_data_to_file
     ):  # test for file presence to assure a single header line
-        with (
-            open(log_file_path, "a", encoding=ENCODING) as log_file
-        ):  # use append mode to prevent deleting data. Append makes a new file if none exists.
-            log_file.write(
-                LOGGER_ID_field_name
-                + SEPARATOR
-                + DATE_TIME_field_name
-                + sens_header
-                + "\n"
-            )
+        with open(
+            log_file_path, "a", encoding=ENCODING
+        ) as log_file:  # use append mode to prevent deleting data. Append makes a new file if none exists.
+            log_file.write(LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header + "\n")
     # test if found log file header matches detected sensors
     elif write_log_data_to_file and os.path.isfile(log_file_path):
         with open(log_file_path, encoding=ENCODING) as log_file:
             file_head_line = log_file.readline()
-        if (
-            file_head_line
-            != LOGGER_ID_field_name
-            + SEPARATOR
-            + DATE_TIME_field_name
-            + sens_header
-            + "\n"
-        ):
+        if file_head_line != LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header + "\n":
             raise HeaderMismatchError("File header not matching sensors detected")
 
     # ----------------- init logger ----------------------------------
@@ -554,24 +522,13 @@ try:  # -------- outer error handler loop -------------------
             last_monotonic_log_time = now_monotonic_time
 
             if USE_UTC_time:
-                date_str = datetime.strftime(
-                    datetime.now(timezone.utc), "%Y-%m-%dT%H:%M:%SZ"
-                )
+                date_str = datetime.strftime(datetime.now(timezone.utc), "%Y-%m-%dT%H:%M:%SZ")
             elif USE_LOCAL_time_with_UTC_offset:
-                date_str = str(
-                    datetime.now().astimezone().replace(microsecond=0).isoformat()
-                )
+                date_str = str(datetime.now().astimezone().replace(microsecond=0).isoformat())
             else:
-                date_str = str(
-                    datetime.now()
-                    .astimezone()
-                    .replace(microsecond=0, tzinfo=None)
-                    .isoformat()
-                )
+                date_str = str(datetime.now().astimezone().replace(microsecond=0, tzinfo=None).isoformat())
 
-            sensor_measurements = "".join(
-                [sensor.get_measurement_str() for sensor in my_sensors]
-            )
+            sensor_measurements = "".join([sensor.get_measurement_str() for sensor in my_sensors])
 
             logline = LOGGER_NAME + SEPARATOR + date_str + sensor_measurements
 
@@ -586,9 +543,7 @@ try:  # -------- outer error handler loop -------------------
             if args.log_once:
                 sys.exit(0)
 
-            remaining_time = log_every_n_seconds - (
-                time.monotonic() - last_monotonic_log_time
-            )
+            remaining_time = log_every_n_seconds - (time.monotonic() - last_monotonic_log_time)
             time.sleep(max(remaining_time, 0))  # smallest allowed number is 0
 
     # -------------------- end main loop --------------------------
