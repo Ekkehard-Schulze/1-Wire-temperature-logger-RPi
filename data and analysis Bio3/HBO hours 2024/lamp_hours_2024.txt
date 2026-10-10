@@ -1,0 +1,8 @@
+per 7.7 month
+---------------
+SZX12_R: 1597.5
+SZX12_L: 123.5
+ImagerZ1: 741.25
+Axioplan2: 7.25
+M165FC: 164.5
+Lumar: 0.0

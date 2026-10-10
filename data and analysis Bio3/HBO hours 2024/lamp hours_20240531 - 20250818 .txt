@@ -1,0 +1,6 @@
+SZX12_R: 2899.5
+SZX12_L: 279.25
+ImagerZ1: 1599.75
+Axioplan2: 7.25
+M165FC: 892.25
+Lumar: 2.75
