@@ -80,7 +80,7 @@ import os
 import sys
 import time
 import traceback
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import ClassVar
 
 # ---------------------- user settings --------------------------
@@ -522,7 +522,7 @@ try:  # -------- outer error handler loop -------------------
             last_monotonic_log_time = now_monotonic_time
 
             if USE_UTC_time:
-                date_str = datetime.strftime(datetime.now(timezone.utc), "%Y-%m-%dT%H:%M:%SZ")
+                date_str = datetime.strftime(datetime.now(UTC), "%Y-%m-%dT%H:%M:%SZ")
             elif USE_LOCAL_time_with_UTC_offset:
                 date_str = str(datetime.now().astimezone().replace(microsecond=0).isoformat())
             else:
