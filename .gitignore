@@ -1,5 +1,6 @@
-# Exclude a specific folders
+# Exclude a specific folders and files
 z_older/
 data and analysis Bio3/
 www github link.url
 ruff.toml
+ruff_run.cmd
