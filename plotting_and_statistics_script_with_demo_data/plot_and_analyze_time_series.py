@@ -148,7 +148,6 @@ def bad_date_and_repeated_header_masker(linesl):
 
 
 def main():
-
     print("initializing...")
 
     # -------------------- file picker ------------------------
