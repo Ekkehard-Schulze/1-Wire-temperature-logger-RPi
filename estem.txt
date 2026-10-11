@@ -1,0 +1,8 @@
+
+ this is just a single script application,
+ no need to spin a project.
+ 
+ Attention: 1-Wire-temperature-logger-RPi.py
+ can not be loades with import as module,
+ because leading number and minus signs are not 
+ allowed.
