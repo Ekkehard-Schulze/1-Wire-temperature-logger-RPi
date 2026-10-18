@@ -6,6 +6,8 @@ Requires a kernel driver for 1-Wire hardware. The script creates a text file con
 Features
 --------
 
+- single file application. Try ´1-Wire-temperature-logger-RPi.py -h´ to see options.
+
 - Multiple temperature sensors on a single long cable
 
 - Auto-discovery of sensors on system startup
