@@ -6,7 +6,7 @@ Requires a kernel driver for 1-Wire hardware. The script creates a text file con
 Features
 --------
 
-- Single file application
+- Single file application. Run `./1-Wire-temperature-logger-RPi.py -h` to see command line options.
 
 - Multiple temperature sensors on a single long cable
 
@@ -47,14 +47,7 @@ resistor between the data line and the 3.3 V supply.
 (three wires) or 'parasite power' (two wires).
 This script was only tested using external power.
 
-1. To view the available command-line options run './1-Wire-temperature-logger-RPi.pyw -h'
-
 2. Read the 'user settings' (lines 85 to 133) and modify these according to your needs.
-
-3. The file name ending '.pyw' prevents the opening of a terminal window when running the script as a cron job. 
-
-4. For advanced usage of 1-Wire temperature sensors with the Linux kernel driver study [Timo Furrer's w1thermsenso package](https://pypi.org/project/w1thermsensor/). This package is not used here.
-
 
 
 Images
