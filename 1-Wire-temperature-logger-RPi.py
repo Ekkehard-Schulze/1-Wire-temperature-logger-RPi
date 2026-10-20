@@ -5,7 +5,7 @@
 # flake8 --ignore=F541,E501 "1wire-temperature-logger-RPi.pyw"
 
 """
-   1wire-temperature-logger-RPi.pyw uses
+   1wire-temperature-logger-RPi.py uses
 
    the Linux kernel driver for sensor readings
 
@@ -19,7 +19,7 @@
 
    DS18B20 (6 pieces) and MAX31850 (4 pieces, with type
 
-   K thermocouples).
+   K thermocouple).
 
    The 1-Wire bus alows many temperature sensors on
 
@@ -27,7 +27,7 @@
 
    The sensors are auto-discovered by the kernel
 
-   during startup and all read out by this script.
+   during startup and read by this script.
 
    Different types of sensors can be used together
 
@@ -114,10 +114,10 @@ USE_SHORT_SENSOR_NAMES = True  # short format is like DS133, long is indicating 
 
 VERBOSE = True  # print data to stdout
 
-LOG_EXCEPTIONS_TO_FILE = (
-    False  # attention: if set to True, you get no backtraces on the terminal, just the written file
-)
+# attention: if set to True, you get no backtraces on the terminal, just the written file
 # intended for crontab jobs and for long unsupervised runs
+LOG_EXCEPTIONS_TO_FILE = False
+
 SEPARATOR = "\t"
 
 LOG_EXCEPTIONS_FILE_NAME = "expeptions_log.txt"
