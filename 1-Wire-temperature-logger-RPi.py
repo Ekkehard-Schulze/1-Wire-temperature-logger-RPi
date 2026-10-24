@@ -2,7 +2,7 @@
 # pylint: disable=line-too-long
 # pylint: disable=invalid-name
 
-# flake8 --ignore=F541,E501 "1wire-temperature-logger-RPi.pyw"
+# flake8 --ignore=F541,E501 "1wire-temperature-logger-RPi.py"
 
 """
    1wire-temperature-logger-RPi.py uses
@@ -59,7 +59,7 @@
 # -------------------
 # Min hour day month weekday
 # quarter-hourly logging of a data frame
-*/15  * * * *    /home/user_name/bin/1wire-temperature-logger-RPi.pyw -q    >/dev/null 2>>/dev/null
+*/15  * * * *    /home/user_name/bin/1wire-temperature-logger-RPi.py -q    >/dev/null 2>>/dev/null
 
 
    The default Raspberry Pi GPIO pin for 1-Wire communication is
