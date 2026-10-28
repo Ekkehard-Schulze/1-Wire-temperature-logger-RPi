@@ -96,8 +96,9 @@ sensor_name_translation = {  # used in a past project to generate explicit colum
 
 USE_UTC_time = True  # otherwise local time  (with or without UTC offset indication) is used
 USE_LOCAL_time_with_UTC_offset = False  # otherwise UTC time or local time without ISO8601 offset is used
+USE_RTC_aligned_timer = False
 
-log_every_n_seconds = 15  # default value, may get changed by command line argument
+LOG_every_n_seconds = 15  # default value, may get changed by command line argument
 
 LOGGER_NAME = "1wire_logger_1"
 
@@ -422,6 +423,15 @@ def truncate_log_top(log_file_namel):
         os.remove(bak_file_name)
 
 
+def get_wait_seconds_for_next_log():
+    """This modulo works if 3600 * 24 =  86400 sec per day is divisible by LOG_every_n_seconds without a rest."""
+    now_utc = datetime.now(UTC)
+    seconds_since_midnight = (
+        (now_utc.hour * 3600) + (now_utc.minute * 60) + now_utc.second + (now_utc.microsecond / 1_000_000)
+    )
+    return LOG_every_n_seconds - (seconds_since_midnight % LOG_every_n_seconds)
+
+
 # --------- main  ----------------------------
 
 # ------------ init  -------------------------------
@@ -435,8 +445,8 @@ parser = argparse.ArgumentParser(
 # ---------- define arguments
 parser.add_argument(
     "-s",
-    "--log_every_n_seconds",
-    default=str(log_every_n_seconds),
+    "--LOG_every_n_seconds",
+    default=str(LOG_every_n_seconds),
     help="Log every second",
 )  # string
 parser.add_argument(
@@ -457,7 +467,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 # ------- store arguments
-log_every_n_seconds = int(args.log_every_n_seconds, 0)
+LOG_every_n_seconds = int(args.LOG_every_n_seconds, 0)
 write_log_data_to_file = not args.do_not_write_log_file
 
 # -------------------  log dir and exceptions file  ------------------------
@@ -507,7 +517,7 @@ try:  # -------- outer error handler loop -------------------
 
     # ----------------- init logger ----------------------------------
     starttime = time.monotonic()
-    last_monotonic_log_time = time.monotonic() - log_every_n_seconds
+    last_monotonic_log_time = time.monotonic() - LOG_every_n_seconds
 
     # -------------- startup message file logging --------------------------
     if write_log_data_to_file:
@@ -516,11 +526,12 @@ try:  # -------- outer error handler loop -------------------
 
     # ------------------- main loop ------------------------------------
 
+    first_run = True
     while True:
-        now_monotonic_time = time.monotonic()
-        if now_monotonic_time - last_monotonic_log_time >= log_every_n_seconds:
-            last_monotonic_log_time = now_monotonic_time
+        last_monotonic_log_time = time.monotonic()
 
+        if not (first_run and USE_RTC_aligned_timer):
+            # ------------ write data frame --------
             if USE_UTC_time:
                 date_str = datetime.strftime(datetime.now(UTC), "%Y-%m-%dT%H:%M:%SZ")
             elif USE_LOCAL_time_with_UTC_offset:
@@ -542,8 +553,14 @@ try:  # -------- outer error handler loop -------------------
 
             if args.log_once:
                 sys.exit(0)
+            # ---------- end data frame -------------
 
-            remaining_time = log_every_n_seconds - (time.monotonic() - last_monotonic_log_time)
+            first_run = False
+            if USE_RTC_aligned_timer:
+                remaining_time = get_wait_seconds_for_next_log()
+            else:
+                remaining_time = LOG_every_n_seconds - (time.monotonic() - last_monotonic_log_time)
+
             time.sleep(max(remaining_time, 0))  # smallest allowed number is 0
 
     # -------------------- end main loop --------------------------
