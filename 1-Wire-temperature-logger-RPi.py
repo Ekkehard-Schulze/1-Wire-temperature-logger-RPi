@@ -96,7 +96,7 @@ sensor_name_translation = {  # used in a past project to generate explicit colum
 
 USE_UTC_time = True  # otherwise local time  (with or without UTC offset indication) is used
 USE_LOCAL_time_with_UTC_offset = False  # otherwise UTC time or local time without ISO8601 offset is used
-USE_RTC_aligned_timer = False
+USE_RTC_aligned_timer = False  # instead of arbitrary start times log times bound to fixed clock times
 
 LOG_every_n_seconds = 15  # default value, may get changed by command line argument
 
