@@ -524,44 +524,43 @@ try:  # -------- outer error handler loop -------------------
         print("\nData logging to " + log_file_path + " in progess....")
     print("Terminate with Strg+C")
 
+    if USE_RTC_aligned_timer:  # wait for alignment
+        time.sleep(get_wait_seconds_for_next_log())
+        print("Waiting for clock alignment for first record.")
+
     # ------------------- main loop ------------------------------------
 
-    first_run = True
     while True:
         last_monotonic_log_time = time.monotonic()
 
-        if not (first_run and USE_RTC_aligned_timer):
-            # ------------ write data frame --------
-            if USE_UTC_time:
-                date_str = datetime.strftime(datetime.now(UTC), "%Y-%m-%dT%H:%M:%SZ")
-            elif USE_LOCAL_time_with_UTC_offset:
-                date_str = str(datetime.now().astimezone().replace(microsecond=0).isoformat())
-            else:
-                date_str = str(datetime.now().astimezone().replace(microsecond=0, tzinfo=None).isoformat())
+        # ------------ write data frame --------
+        if USE_UTC_time:
+            date_str = datetime.strftime(datetime.now(UTC), "%Y-%m-%dT%H:%M:%SZ")
+        elif USE_LOCAL_time_with_UTC_offset:
+            date_str = str(datetime.now().astimezone().replace(microsecond=0).isoformat())
+        else:
+            date_str = str(datetime.now().astimezone().replace(microsecond=0, tzinfo=None).isoformat())
 
-            sensor_measurements = "".join([sensor.get_measurement_str() for sensor in my_sensors])
+        sensor_measurements = "".join([sensor.get_measurement_str() for sensor in my_sensors])
 
-            logline = LOGGER_NAME + SEPARATOR + date_str + sensor_measurements
+        logline = LOGGER_NAME + SEPARATOR + date_str + sensor_measurements
 
-            if VERBOSE:
-                print(logline)
-            if write_log_data_to_file:
-                with open(log_file_path, "a", encoding=ENCODING) as log_file:
-                    log_file.write(logline + "\n")
-                if MAX_LOG_SIZE:
-                    truncate_log_top(log_file_path)
+        if VERBOSE:
+            print(logline)
+        if write_log_data_to_file:
+            with open(log_file_path, "a", encoding=ENCODING) as log_file:
+                log_file.write(logline + "\n")
+            if MAX_LOG_SIZE:
+                truncate_log_top(log_file_path)
 
-            if args.log_once:
-                sys.exit(0)
-            # ---------- end data frame -------------
+        if args.log_once:
+            sys.exit(0)
+        # ---------- end data frame -------------
 
-            first_run = False
-            if USE_RTC_aligned_timer:
-                remaining_time = get_wait_seconds_for_next_log()
-            else:
-                remaining_time = LOG_every_n_seconds - (time.monotonic() - last_monotonic_log_time)
-
-            time.sleep(max(remaining_time, 0))  # smallest allowed number is 0
+        if USE_RTC_aligned_timer:
+            time.sleep(get_wait_seconds_for_next_log())
+        else:  # smallest allowed number is 0
+            time.sleep(max(LOG_every_n_seconds - (time.monotonic() - last_monotonic_log_time), 0))
 
     # -------------------- end main loop --------------------------
 
