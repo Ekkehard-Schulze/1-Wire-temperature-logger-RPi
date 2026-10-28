@@ -525,8 +525,8 @@ try:  # -------- outer error handler loop -------------------
     print("Terminate with Strg+C")
 
     if USE_RTC_aligned_timer:  # wait for alignment
-        time.sleep(get_wait_seconds_for_next_log())
         print("Waiting for clock alignment for first record.")
+        time.sleep(get_wait_seconds_for_next_log())
 
     # ------------------- main loop ------------------------------------
 
