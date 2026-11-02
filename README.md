@@ -1,6 +1,11 @@
-1-Wire temperature logger for Linux systems
-===========================================
-Requires a kernel driver for 1-Wire hardware. The script creates a text file containing temperature data and timestamps. It has documented mercury arc lamp usage in a lab for two years. The Linux operating system ensures unattended, long-term, stable operation and network access to the data.
+
+# 1-Wire Lab Temperature Logger
+
+An automated, long-term temperature monitoring solution built for Linux environments. Originally deployed to document mercury arc lamp usage in a lab for over two years, this script ensures solid, unattended operation and easy network data retrieval.
+
+* **Hardware Integration:** Leverages the native Linux kernel driver for 1-Wire hardware, standard on Raspberry Pi devices running Raspbian (Raspberry Pi OS).
+* **Data Storage:** Generates structured text files containing precise timestamps and temperature data.
+* **Reliability:** Built for the Linux ecosystem to ensure high uptime and remote network access.
 
 
 Features
