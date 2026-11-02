@@ -4,7 +4,7 @@
 An automated, long-term temperature monitoring solution built for Linux environments. Originally deployed to document mercury arc lamp usage in a lab for over two years, this script ensures solid, unattended operation and easy network data retrieval.
 
 * **Hardware Integration:** Leverages the native Linux kernel driver for 1-Wire hardware, standard on Raspberry Pi devices running Raspbian (Raspberry Pi OS).
-* **Data Storage:** Generates structured text files containing precise timestamps and temperature data.
+* **Data Storage:** Generates structured text files containing timestamps and temperature data.
 * **Reliability:** Built for the Linux ecosystem to ensure high uptime and remote network access.
 
 
