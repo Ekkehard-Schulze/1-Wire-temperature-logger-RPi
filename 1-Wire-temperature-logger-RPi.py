@@ -96,7 +96,9 @@ sensor_name_translation = {  # used in a past project to generate explicit colum
 
 USE_UTC_time = True  # otherwise local time  (with or without UTC offset indication) is used
 USE_LOCAL_time_with_UTC_offset = False  # otherwise UTC time or local time without ISO8601 offset is used
-USE_RTC_aligned_timer = False  # instead of arbitrary start times log times bound to fixed clock times
+USE_RTC_aligned_interval_timer = (
+    False  # True: log times bound to fixed clock times, 3600 must be devisible by LOG_every_n_seconds without rest
+)
 
 LOG_every_n_seconds = 15  # default value, may get changed by command line argument
 
@@ -423,13 +425,44 @@ def truncate_log_top(log_file_namel):
         os.remove(bak_file_name)
 
 
-def get_wait_seconds_for_next_log():
-    """This modulo works if 3600 * 24 =  86400 sec per day is divisible by LOG_every_n_seconds without a rest."""
+class IntervalTimer:
+    def __init__(self, interval_seconds: float):
+        # Convert the interval from seconds to nanoseconds
+        self.interval_ns = int(interval_seconds * 1_000_000_000)
+
+        # Calculate the initial alignment offset based on the current monotonic time
+        now = time.monotonic_ns()
+        self.offset_ns = now % self.interval_ns
+
+    @property
+    def seconds_to_next(self) -> float:
+        """Returns the waiting time to the next interval in seconds."""
+        # Subtract offset to align to initialization grid, find elapsed time in current cycle,
+        # subtract from interval to get remaining time, and modulo again to handle the 0 case.
+        return (
+            (self.interval_ns - ((time.monotonic_ns() - self.offset_ns) % self.interval_ns)) % self.interval_ns
+        ) / 1_000_000_000
+
+
+def get_wait_seconds_for_clock_aligned_next_log(LOG_every_n_seconds: int) -> float:
+    """Calculates wait time to align precisely with the next real-world clock interval.
+    Assumes 86400 is perfectly divisible by LOG_every_n_seconds.
+    """
     now_utc = datetime.now(UTC)
+
+    # Calculate exact elapsed seconds since midnight (including microseconds)
     seconds_since_midnight = (
         (now_utc.hour * 3600) + (now_utc.minute * 60) + now_utc.second + (now_utc.microsecond / 1_000_000)
     )
-    return LOG_every_n_seconds - (seconds_since_midnight % LOG_every_n_seconds)
+
+    # Calculate how far we are into the CURRENT interval block
+    current_block_elapsed = seconds_since_midnight % LOG_every_n_seconds
+
+    # Time remaining to reach the NEXT interval block
+    remaining = LOG_every_n_seconds - current_block_elapsed
+
+    # Use modulo to turn a full interval wait into 0 if we are perfectly on the dot
+    return remaining % LOG_every_n_seconds
 
 
 # --------- main  ----------------------------
@@ -516,23 +549,21 @@ try:  # -------- outer error handler loop -------------------
             raise HeaderMismatchError("File header not matching sensors detected")
 
     # ----------------- init logger ----------------------------------
-    starttime = time.monotonic()
-    last_monotonic_log_time = time.monotonic() - LOG_every_n_seconds
 
-    # -------------- startup message file logging --------------------------
+    # -------------- startup message file logging, init timer ---------
     if write_log_data_to_file:
         print("\nData logging to " + log_file_path + " in progess....")
     print("Terminate with Strg+C")
 
-    if USE_RTC_aligned_timer:  # wait for alignment
+    if USE_RTC_aligned_interval_timer:  # wait for alignment
         print("Waiting for clock alignment for first record.")
-        time.sleep(get_wait_seconds_for_next_log())
+        time.sleep(get_wait_seconds_for_clock_aligned_next_log())
+    else:
+        interval_timer_ns = IntervalTimer(LOG_every_n_seconds)
 
     # ------------------- main loop ------------------------------------
 
     while True:
-        last_monotonic_log_time = time.monotonic()
-
         # ------------ write data frame --------
         if USE_UTC_time:
             date_str = datetime.strftime(datetime.now(UTC), "%Y-%m-%dT%H:%M:%SZ")
@@ -557,10 +588,10 @@ try:  # -------- outer error handler loop -------------------
             sys.exit(0)
         # ---------- end data frame -------------
 
-        if USE_RTC_aligned_timer:
-            time.sleep(get_wait_seconds_for_next_log())
-        else:  # smallest allowed number is 0
-            time.sleep(max(LOG_every_n_seconds - (time.monotonic() - last_monotonic_log_time), 0))
+        if USE_RTC_aligned_interval_timer:
+            time.sleep(get_wait_seconds_for_clock_aligned_next_log())
+        else:
+            time.sleep(interval_timer_ns.seconds_to_next)
 
     # -------------------- end main loop --------------------------
 
