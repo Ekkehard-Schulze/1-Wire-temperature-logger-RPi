@@ -558,7 +558,7 @@ try:  # -------- outer error handler loop -------------------
     if USE_RTC_aligned_interval_timer:  # wait for alignment
         print("Waiting for clock alignment for first record.")
         time.sleep(get_wait_seconds_for_clock_aligned_next_log())
-    else:
+    elif not args.log_once:
         interval_timer_ns = IntervalTimer(LOG_every_n_seconds)
 
     # ------------------- main loop ------------------------------------
