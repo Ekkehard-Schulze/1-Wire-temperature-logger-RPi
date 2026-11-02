@@ -32,7 +32,8 @@ Features
 
 - Preferably, the system records a data frame when called by the Linux cron daemon; otherwise, it logs temperature measurements using its own timer.
 
-- Writes data to a TSV file with ISO 8601 timestamps. Fully compatible for downstream analysis with Spreadsheets and Python (pandas).
+- Writes data to a TSV file with ISO 8601 timestamps. Fully compatible with spreadsheets and Python (pandas) for downstream analysis.
+
 
 - Another script provides graphical data analyzis and statistics.
 
