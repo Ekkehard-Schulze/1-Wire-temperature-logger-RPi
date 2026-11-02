@@ -66,8 +66,7 @@ Experimental setup for monitoring mercury arc lamp usage over a two-year period.
 <br/><br/>
 ![Sensor chan](https://github.com/Ekkehard-Schulze/1-Wire-temperature-logger-RPi/blob/main/images/Raspi_with_typeK_thermocouples.jpg)
 
-Four Type K thermocouples, connected via MAX31850 amplifiers to a Raspberry Pi 3B+, enable temperature measurements ranging from -200 °C to 1200 °C. As an example application, this setup was used for the characterization of both spatial thermal gradients across the PCR thermocycler heating block and its dynamic temperature performance over time.
-
+Experimental setup utilizing four Type K thermocouples and MAX31850 amplifiers interfaced with a Raspberry Pi 3B+ for wide-range temperature monitoring (-200 °C to 1200 °C). The system was used to characterize the spatial thermal gradients and dynamic temperature performance of a PCR thermocycler heating blocks.
 
 ![Sensor chan](https://github.com/Ekkehard-Schulze/1-Wire-temperature-logger-RPi/blob/main/images/plots_and_statistics_of_time_series.py_screenshot.webp)
 
