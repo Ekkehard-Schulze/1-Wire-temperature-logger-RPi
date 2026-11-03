@@ -452,6 +452,7 @@ class Interval_ns_Timer:
 def get_wait_seconds_for_next_RTC_aligned_log(LOG_every_n_seconds_l: int) -> float:
     """Calculates wait time to align precisely with the next real-world clock interval.
     Assumes 86400 is perfectly divisible by LOG_every_n_seconds_l.
+    Use UTC, because it has no daylight syvings time shifts.
     """
     now_utc = datetime.now(UTC)
 
@@ -468,6 +469,7 @@ def get_wait_seconds_for_next_RTC_aligned_log(LOG_every_n_seconds_l: int) -> flo
 
     # Use modulo to turn a full interval wait into 0 if we are perfectly on the dot
     return remaining % LOG_every_n_seconds_l
+
 
 
 # --------- main  ----------------------------
