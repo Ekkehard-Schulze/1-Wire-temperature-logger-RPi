@@ -448,28 +448,41 @@ class Interval_ns_Timer:
             (self.interval_ns - ((time.monotonic_ns() - self.offset_ns) % self.interval_ns)) % self.interval_ns
         ) / 1_000_000_000
 
+    def sleep_seconds_to_next(self):
+        """Sleeps until the next aligned interval."""
+        time.sleep(self.seconds_to_next)
 
-def get_wait_seconds_for_next_RTC_aligned_log(LOG_every_n_seconds_l: int) -> float:
-    """Calculates wait time to align precisely with the next real-world clock interval.
-    Assumes 86400 is perfectly divisible by LOG_every_n_seconds_l.
-    Use UTC, because it has no daylight syvings time shifts.
-    """
-    now_utc = datetime.now(UTC)
 
-    # Calculate exact elapsed seconds since midnight (including microseconds)
-    seconds_since_midnight = (
-        (now_utc.hour * 3600) + (now_utc.minute * 60) + now_utc.second + (now_utc.microsecond / 1_000_000)
-    )
+class Interval_RTC_aligned_Timer:
+    def __init__(self, interval_seconds: int):
+        # Convert the interval from seconds to nanoseconds
+        self.interval_sec = interval_seconds
 
-    # Calculate how far we are into the CURRENT interval block
-    current_block_elapsed = seconds_since_midnight % LOG_every_n_seconds_l
+    @property
+    def seconds_to_next(self) -> float:
+        """Calculates wait time to align precisely with the next real-world clock interval.
+        Assumes 86400 is perfectly divisible by self.interval_sec.
+        Use UTC, because it has no daylight syvings time shifts.
+        """
+        now_utc = datetime.now(UTC)
 
-    # Time remaining to reach the NEXT interval block
-    remaining = LOG_every_n_seconds_l - current_block_elapsed
+        # Calculate exact elapsed seconds since midnight (including microseconds)
+        seconds_since_midnight = (
+            (now_utc.hour * 3600) + (now_utc.minute * 60) + now_utc.second + (now_utc.microsecond / 1_000_000)
+        )
 
-    # Use modulo to turn a full interval wait into 0 if we are perfectly on the dot
-    return remaining % LOG_every_n_seconds_l
+        # Calculate how far we are into the CURRENT interval block
+        current_block_elapsed = seconds_since_midnight % self.interval_sec
 
+        # Time remaining to reach the NEXT interval block
+        remaining = self.interval_sec - current_block_elapsed
+
+        # Use modulo to turn a full interval wait into 0 if we are perfectly on the dot
+        return remaining % self.interval_sec
+
+    def sleep_seconds_to_next(self):
+        """Sleeps until the next aligned interval."""
+        time.sleep(self.seconds_to_next)
 
 
 # --------- main  ----------------------------
@@ -557,16 +570,13 @@ try:  # -------- outer error handler loop -------------------
 
     # ----------------- init logger ----------------------------------
 
-    # -------------- startup message file logging, init timer ---------
-    if write_log_data_to_file:
-        print("\nData logging to " + log_file_path + " in progess....")
-    print("Terminate with Strg+C")
-
+    # ------------ start timer ---------------------------------
     if USE_RTC_aligned_interval_timer:  # wait for alignment
+        active_timer = Interval_RTC_aligned_Timer(LOG_every_n_seconds)
         print("Waiting for clock alignment for first record.")
-        time.sleep(get_wait_seconds_for_next_RTC_aligned_log(LOG_every_n_seconds))
+        active_timer.sleep_seconds_to_next()
     elif not args.log_once:
-        interval_timer_ns = Interval_ns_Timer(LOG_every_n_seconds)
+        active_timer = Interval_ns_Timer(LOG_every_n_seconds)
 
     # ------------------- main loop ------------------------------------
 
@@ -595,10 +605,7 @@ try:  # -------- outer error handler loop -------------------
             sys.exit(0)
         # ---------- end data frame -------------
 
-        if USE_RTC_aligned_interval_timer:
-            time.sleep(get_wait_seconds_for_next_RTC_aligned_log(LOG_every_n_seconds))
-        else:
-            time.sleep(interval_timer_ns.seconds_to_next)
+        active_timer.sleep_seconds_to_next()
 
     # -------------------- end main loop --------------------------
 
