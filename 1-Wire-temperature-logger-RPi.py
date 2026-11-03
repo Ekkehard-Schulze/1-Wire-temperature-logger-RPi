@@ -95,10 +95,15 @@ sensor_name_translation = {  # used in a past project to generate explicit colum
 }
 
 USE_UTC_time = True  # otherwise local time  (with or without UTC offset indication) is used
-USE_LOCAL_time_with_UTC_offset = False  # otherwise UTC time or local time without ISO8601 offset is used
-USE_RTC_aligned_interval_timer = (
-    False  # True: log times bound to fixed clock times, 3600 must be devisible by LOG_every_n_seconds without rest
-)
+
+# modifier for local time
+USE_LOCAL_time_with_UTC_offset = False  # False: otherwise local time without ISO8601 offset is used
+
+# True: log times bound to fixed RTC clock times based on seconds after UTC midnight.
+# True: UTC has now dailight savings shift.
+# True: assumes 86400 is divisible by LOG_every_n_seconds without rest
+# False: interval timer based on time.monotonic_ns() is uses with arbitrary start
+USE_RTC_aligned_interval_timer = False
 
 LOG_every_n_seconds = 15  # default value, may get changed by command line argument
 
@@ -425,7 +430,7 @@ def truncate_log_top(log_file_namel):
         os.remove(bak_file_name)
 
 
-class IntervalTimer:
+class Interval_ns_Timer:
     def __init__(self, interval_seconds: float):
         # Convert the interval from seconds to nanoseconds
         self.interval_ns = int(interval_seconds * 1_000_000_000)
@@ -444,9 +449,9 @@ class IntervalTimer:
         ) / 1_000_000_000
 
 
-def get_wait_seconds_for_clock_aligned_next_log(LOG_every_n_seconds: int) -> float:
+def get_wait_seconds_for_next_RTC_aligned_log(LOG_every_n_seconds_l: int) -> float:
     """Calculates wait time to align precisely with the next real-world clock interval.
-    Assumes 86400 is perfectly divisible by LOG_every_n_seconds.
+    Assumes 86400 is perfectly divisible by LOG_every_n_seconds_l.
     """
     now_utc = datetime.now(UTC)
 
@@ -456,13 +461,13 @@ def get_wait_seconds_for_clock_aligned_next_log(LOG_every_n_seconds: int) -> flo
     )
 
     # Calculate how far we are into the CURRENT interval block
-    current_block_elapsed = seconds_since_midnight % LOG_every_n_seconds
+    current_block_elapsed = seconds_since_midnight % LOG_every_n_seconds_l
 
     # Time remaining to reach the NEXT interval block
-    remaining = LOG_every_n_seconds - current_block_elapsed
+    remaining = LOG_every_n_seconds_l - current_block_elapsed
 
     # Use modulo to turn a full interval wait into 0 if we are perfectly on the dot
-    return remaining % LOG_every_n_seconds
+    return remaining % LOG_every_n_seconds_l
 
 
 # --------- main  ----------------------------
@@ -557,9 +562,9 @@ try:  # -------- outer error handler loop -------------------
 
     if USE_RTC_aligned_interval_timer:  # wait for alignment
         print("Waiting for clock alignment for first record.")
-        time.sleep(get_wait_seconds_for_clock_aligned_next_log())
+        time.sleep(get_wait_seconds_for_next_RTC_aligned_log(LOG_every_n_seconds))
     elif not args.log_once:
-        interval_timer_ns = IntervalTimer(LOG_every_n_seconds)
+        interval_timer_ns = Interval_ns_Timer(LOG_every_n_seconds)
 
     # ------------------- main loop ------------------------------------
 
@@ -569,7 +574,7 @@ try:  # -------- outer error handler loop -------------------
             date_str = datetime.strftime(datetime.now(UTC), "%Y-%m-%dT%H:%M:%SZ")
         elif USE_LOCAL_time_with_UTC_offset:
             date_str = str(datetime.now().astimezone().replace(microsecond=0).isoformat())
-        else:
+        else:  # local time without UTC offset indication
             date_str = str(datetime.now().astimezone().replace(microsecond=0, tzinfo=None).isoformat())
 
         sensor_measurements = "".join([sensor.get_measurement_str() for sensor in my_sensors])
@@ -589,7 +594,7 @@ try:  # -------- outer error handler loop -------------------
         # ---------- end data frame -------------
 
         if USE_RTC_aligned_interval_timer:
-            time.sleep(get_wait_seconds_for_clock_aligned_next_log())
+            time.sleep(get_wait_seconds_for_next_RTC_aligned_log(LOG_every_n_seconds))
         else:
             time.sleep(interval_timer_ns.seconds_to_next)
 
