@@ -120,7 +120,7 @@ LOGGER_DATA_DIR = "~/1wire_logs"  # relative to user home
 
 USE_SHORT_SENSOR_NAMES = True  # short format is like DS133, long is indicating the sensor type like DS18B20_159
 
-VERBOSE = True  # print data to stdout
+REJECT_sensor_changes = True  # abort startup if sensors detected on init do not
 
 # attention: if set to True, you get no backtraces on the terminal, just the written file
 # intended for crontab jobs and for long unsupervised runs
@@ -141,11 +141,26 @@ DATE_TIME_field_name = "Date_time"
 
 ENCODING = "utf-8"
 
+
+ERROR = 10
+LOGDATA = 20
+LOGGER_ACTIONS = 30
+VERBOSE = 50
+DEBUG = 90
+
+PRINT_MSG_LEVEL_active = LOGGER_ACTIONS  # filter threshold for print
+
+
 # ---------------------- end of user default settings --------------------------
 
 
 class HeaderMismatchError(Exception):
     """Raised when the log file header does not match the detected sensors."""
+
+
+def print_level_msg(content, level):
+    if level <= PRINT_MSG_LEVEL_active:
+        print(content)
 
 
 class one_wire_temperature:
@@ -415,7 +430,7 @@ def truncate_log_top(log_file_namel):
         with open(log_file_namel, encoding=ENCODING) as f:
             num_lines = len(f.readlines())
         n_lines_to_delete = int(0.1 * num_lines)
-        print("lines deleted", n_lines_to_delete)
+        print_level_msg(f"lines deleted {n_lines_to_delete}", DEBUG)
         bak_file_name = log_file_namel[:-4] + ".bak"
         if os.path.isfile(bak_file_name):
             os.remove(bak_file_name)
@@ -431,9 +446,13 @@ def truncate_log_top(log_file_namel):
 
 
 class Interval_ns_Timer:
-    def __init__(self, interval_seconds: float):
+    """Interval timer based on modulo time.monotonic_ns(),
+    which has an arbitrary start and an infinitely long integer representation,
+    """
+
+    def __init__(self, interval_seconds: int):
         # Convert the interval from seconds to nanoseconds
-        self.interval_ns = int(interval_seconds * 1_000_000_000)
+        self.interval_ns = interval_seconds * 1_000_000_000
 
         # Calculate the initial alignment offset based on the current monotonic time
         now = time.monotonic_ns()
@@ -454,6 +473,12 @@ class Interval_ns_Timer:
 
 
 class Interval_RTC_aligned_Timer:
+    """Interval timer based on modulo interval UTC datetime seconds post midnight.
+    Calculates wait time to align precisely with the next real-world clock interval.
+    Assumes 86400 is perfectly divisible by interval_seconds.
+    UTC is used , because it has no daylight sayvings time shifts.
+    """
+
     def __init__(self, interval_seconds: int):
         # Convert the interval from seconds to nanoseconds
         self.interval_sec = interval_seconds
@@ -546,34 +571,45 @@ try:  # -------- outer error handler loop -------------------
 
     # sens_header = ''.join([SEPARATOR + sensor.get_sensor_headers()  for sensor in my_sensors])
 
-    sens_header = "".join([sensor.get_sensor_headers() for sensor in my_sensors])  # concat for multiple
     # heterogeneous sensor objects
-    if VERBOSE or write_log_data_to_file:
-        print("\nSensor(s) " + sens_header.replace(SEPARATOR, " "))
+    sens_header = "".join([sensor.get_sensor_headers() for sensor in my_sensors])  # concat for multiple
+
+    print_level_msg(f"\nSensor(s) {sens_header.replace(SEPARATOR, ' ')} ", VERBOSE)
 
     log_file_path = f"{LOGGER_DATA_DIR}{os.sep}{LOG_FILE_NAME}"
+
     # ------------------- init log file  ------------------------
 
-    if (
-        not os.path.isfile(log_file_path) and write_log_data_to_file
-    ):  # test for file presence to assure a single header line
-        with open(
-            log_file_path, "a", encoding=ENCODING
-        ) as log_file:  # use append mode to prevent deleting data. Append makes a new file if none exists.
-            log_file.write(LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header + "\n")
+    header_line_now = LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header + "\n"
+
+    # init new file if none exists
+    if not os.path.isfile(log_file_path) and write_log_data_to_file:
+        # use append mode to prevent deleting data. Append makes a new file if none exists.
+        with open(log_file_path, "a", encoding=ENCODING) as log_file:
+            log_file.write(header_line_now)
+
     # test if found log file header matches detected sensors
     elif write_log_data_to_file and os.path.isfile(log_file_path):
         with open(log_file_path, encoding=ENCODING) as log_file:
             file_head_line = log_file.readline()
-        if file_head_line != LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header + "\n":
-            raise HeaderMismatchError("File header not matching sensors detected")
+        if file_head_line != header_line_now:
+            if REJECT_sensor_changes:
+                raise HeaderMismatchError("File header not matching sensors detected")
+            with open(log_file_path, "a", encoding=ENCODING) as log_file:
+                log_file.write(header_line_now)
 
     # ----------------- init logger ----------------------------------
+    # -------------- startup message file logging --------------------------
+    if write_log_data_to_file:
+        print_level_msg(f"\nData logging to {log_file_path} in progess....", LOGGER_ACTIONS)
+    print_level_msg("Terminate with Strg+C\n", LOGGER_ACTIONS)
+
+    print_level_msg(header_line_now.rstrip(), LOGDATA)
 
     # ------------ start timer ---------------------------------
     if USE_RTC_aligned_interval_timer:  # wait for alignment
         active_timer = Interval_RTC_aligned_Timer(LOG_every_n_seconds)
-        print("Waiting for clock alignment for first record.")
+        print_level_msg("Waiting for clock alignment for first record.", LOGGER_ACTIONS)
         active_timer.sleep_seconds_to_next()
     elif not args.log_once:
         active_timer = Interval_ns_Timer(LOG_every_n_seconds)
@@ -593,8 +629,7 @@ try:  # -------- outer error handler loop -------------------
 
         logline = LOGGER_NAME + SEPARATOR + date_str + sensor_measurements
 
-        if VERBOSE:
-            print(logline)
+        print_level_msg(logline, LOGDATA)
         if write_log_data_to_file:
             with open(log_file_path, "a", encoding=ENCODING) as log_file:
                 log_file.write(logline + "\n")
