@@ -109,7 +109,7 @@ LOG_every_n_seconds = 15  # default value, may get changed by command line argum
 
 LOGGER_NAME = "1wire_logger_1"
 
-write_log_data_to_file = True  # may get changed by command line argument
+WRITE_LOG_data_to_file = True  # may get changed by command line argument
 
 LOG_FILE_NAME = "1wire-temperatures.tsv"  # if empty name comes from first sensor object
 
@@ -159,6 +159,7 @@ class HeaderMismatchError(Exception):
 
 
 def print_level_msg(content, level):
+    """ print with level threshold"""
     if level <= PRINT_MSG_LEVEL_active:
         print(content)
 
@@ -569,42 +570,44 @@ try:  # -------- outer error handler loop -------------------
 
     # --------------- collect all sensor names from sensor objects -------------------------------
 
-    # sens_header = ''.join([SEPARATOR + sensor.get_sensor_headers()  for sensor in my_sensors])
+    # sens_header_now = ''.join([SEPARATOR + sensor.get_sensor_headers()  for sensor in my_sensors])
 
     # heterogeneous sensor objects
-    sens_header = "".join([sensor.get_sensor_headers() for sensor in my_sensors])  # concat for multiple
+    sens_header_now = "".join([sensor.get_sensor_headers() for sensor in my_sensors])  # concat for multiple
 
-    print_level_msg(f"\nSensor(s) {sens_header.replace(SEPARATOR, ' ')} ", VERBOSE)
+    print_level_msg(f"\nSensor(s) {sens_header_now.replace(SEPARATOR, ' ')} ", VERBOSE)
 
     log_file_path = f"{LOGGER_DATA_DIR}{os.sep}{LOG_FILE_NAME}"
 
-    # ------------------- init log file  ------------------------
-
-    header_line_now = LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header + "\n"
-
-    # init new file if none exists
-    if not os.path.isfile(log_file_path) and write_log_data_to_file:
-        # use append mode to prevent deleting data. Append makes a new file if none exists.
-        with open(log_file_path, "a", encoding=ENCODING) as log_file:
-            log_file.write(header_line_now)
-
-    # test if found log file header matches detected sensors
-    elif write_log_data_to_file and os.path.isfile(log_file_path):
-        with open(log_file_path, encoding=ENCODING) as log_file:
-            file_head_line = log_file.readline()
-        if file_head_line != header_line_now:
-            if REJECT_sensor_changes:
-                raise HeaderMismatchError("File header not matching sensors detected")
-            with open(log_file_path, "a", encoding=ENCODING) as log_file:
-                log_file.write(header_line_now)
-
-    # ----------------- init logger ----------------------------------
     # -------------- startup message file logging --------------------------
     if write_log_data_to_file:
         print_level_msg(f"\nData logging to {log_file_path} in progess....", LOGGER_ACTIONS)
     print_level_msg("Terminate with Strg+C\n", LOGGER_ACTIONS)
 
+    # ------------------- init log file  ------------------------
+
+    header_line_now = LOGGER_ID_field_name + SEPARATOR + DATE_TIME_field_name + sens_header_now + "\n"
+
+    def write_header_line():
+        """use append mode to prevent deleting data. Append makes a new file if none exists."""
+        with open(log_file_path, "a") as log_filel:
+            log_filel.write(header_line_now)
+
+    if WRITE_LOG_data_to_file:
+        if not os.path.isfile(log_file_path):
+            write_header_line()
+        else:  # check if now detected header matches file header
+            with open(log_file_path) as log_file:
+                file_head_line = log_file.readline()
+            file_sens_header = SEPARATOR.join(file_head_line.split(SEPARATOR)[2:])
+            if file_sens_header.strip() != sens_header_now.strip():
+                if REJECT_sensor_changes:
+                    raise HeaderMismatchError("File header not matching sensors detected")
+                write_header_line()
+
     print_level_msg(header_line_now.rstrip(), LOGDATA)
+
+    # ----------------- init logger ----------------------------------
 
     # ------------ start timer ---------------------------------
     if USE_RTC_aligned_interval_timer:  # wait for alignment
