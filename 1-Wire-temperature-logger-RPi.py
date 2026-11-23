@@ -94,22 +94,24 @@ sensor_name_translation = {  # used in a past project to generate explicit colum
     # 'DS140': "SZX12_L",
 }
 
-USE_UTC_time = True  # otherwise local time  (with or without UTC offset indication) is used
+# True: UTC in ISO8601 "Z" format, False: local time
+USE_UTC_time = True
 
-# modifier for local time
-USE_LOCAL_time_with_UTC_offset = False  # False: otherwise local time without ISO8601 offset is used
+# local time format, ISO8601 variant, attention: local time has daylight saving time switch!
+USE_LOCAL_time_with_UTC_offset = False
 
-# True: log times bound to fixed RTC clock times based on seconds after UTC midnight.
-# True: UTC has now dailight savings shift.
+# Type of interval timer used (not relevant for -q single run-quit option)
+# True: log times aligned to fixed RTC clock times based on seconds after UTC midnight
+# True: UTC is used because has NO dailight savings shift.
 # True: assumes 86400 is divisible by LOG_every_n_seconds without rest
-# False: interval timer based on time.monotonic_ns() is uses with arbitrary start
+# False: interval timer based on time.monotonic_ns() is used with arbitrary start
 USE_RTC_aligned_interval_timer = False
 
 LOG_every_n_seconds = 15  # default value, may get changed by command line argument
 
 LOGGER_NAME = "1wire_logger_1"
 
-WRITE_LOG_data_to_file = True  # may get changed by command line argument
+WRITE_log_data_to_file = True  # may get changed by command line argument
 
 LOG_FILE_NAME = "1wire-temperatures.tsv"  # if empty name comes from first sensor object
 
@@ -154,14 +156,13 @@ PRINT_MSG_LEVEL_active = LOGGER_ACTIONS  # filter threshold for print
 # ---------------------- end of user default settings --------------------------
 
 
-class HeaderMismatchError(Exception):
-    """Raised when the log file header does not match the detected sensors."""
-
-
 def print_level_msg(content, level):
-    """ print with level threshold"""
+    """print with level threshold"""
     if level <= PRINT_MSG_LEVEL_active:
         print(content)
+
+
+# ============ Sensor Definitions =========================
 
 
 class one_wire_temperature:
@@ -424,6 +425,15 @@ class one_wire_temperature:
         return out_str
 
 
+# ============================= end sensor objects ===============================
+
+# --------------- utilities -----------------------------
+
+
+class HeaderMismatchError(Exception):
+    """Raised when the log file header does not match the detected sensors."""
+
+
 def truncate_log_top(log_file_namel):
     """Delete 10% top part of log data in order to limit file size.
     This prunes oldest data."""
@@ -511,6 +521,8 @@ class Interval_RTC_aligned_Timer:
         time.sleep(self.seconds_to_next)
 
 
+# --------------- end of utilities -----------------------------
+
 # --------- main  ----------------------------
 
 # ------------ init  -------------------------------
@@ -542,19 +554,21 @@ parser.add_argument(
     help="quits after single log",
     action="store_true",
 )  # boolean argparse
-# --------------  collect arguments
+# --------------  collect arguments -----------------
 args = parser.parse_args()
 
 # ------- store arguments
 LOG_every_n_seconds = int(args.LOG_every_n_seconds, 0)
-write_log_data_to_file = not args.do_not_write_log_file
+WRITE_log_data_to_file = not args.do_not_write_log_file
 
 # -------------------  log dir and exceptions file  ------------------------
 
 LOGGER_DATA_DIR = os.path.expanduser(LOGGER_DATA_DIR) if "~" in LOGGER_DATA_DIR else LOGGER_DATA_DIR
 
-if LOGGER_DATA_DIR != "" and write_log_data_to_file:
+if LOGGER_DATA_DIR != "" and WRITE_log_data_to_file:
     os.makedirs(LOGGER_DATA_DIR, exist_ok=True)
+
+log_file_path = f"{LOGGER_DATA_DIR}{os.sep}{LOG_FILE_NAME}"
 
 exceptions_file_path = f"{LOGGER_DATA_DIR}{os.sep}{LOG_EXCEPTIONS_FILE_NAME}"
 if (not os.path.isfile(exceptions_file_path)) and LOG_EXCEPTIONS_TO_FILE:
@@ -577,10 +591,8 @@ try:  # -------- outer error handler loop -------------------
 
     print_level_msg(f"\nSensor(s) {sens_header_now.replace(SEPARATOR, ' ')} ", VERBOSE)
 
-    log_file_path = f"{LOGGER_DATA_DIR}{os.sep}{LOG_FILE_NAME}"
-
     # -------------- startup message file logging --------------------------
-    if write_log_data_to_file:
+    if WRITE_log_data_to_file:
         print_level_msg(f"\nData logging to {log_file_path} in progess....", LOGGER_ACTIONS)
     print_level_msg("Terminate with Strg+C\n", LOGGER_ACTIONS)
 
@@ -590,14 +602,14 @@ try:  # -------- outer error handler loop -------------------
 
     def write_header_line():
         """use append mode to prevent deleting data. Append makes a new file if none exists."""
-        with open(log_file_path, "a") as log_filel:
+        with open(log_file_path, "a", encoding=ENCODING) as log_filel:
             log_filel.write(header_line_now)
 
-    if WRITE_LOG_data_to_file:
+    if WRITE_log_data_to_file:
         if not os.path.isfile(log_file_path):
             write_header_line()
         else:  # check if now detected header matches file header
-            with open(log_file_path) as log_file:
+            with open(log_file_path, encoding=ENCODING) as log_file:
                 file_head_line = log_file.readline()
             file_sens_header = SEPARATOR.join(file_head_line.split(SEPARATOR)[2:])
             if file_sens_header.strip() != sens_header_now.strip():
@@ -633,7 +645,7 @@ try:  # -------- outer error handler loop -------------------
         logline = LOGGER_NAME + SEPARATOR + date_str + sensor_measurements
 
         print_level_msg(logline, LOGDATA)
-        if write_log_data_to_file:
+        if WRITE_log_data_to_file:
             with open(log_file_path, "a", encoding=ENCODING) as log_file:
                 log_file.write(logline + "\n")
             if MAX_LOG_SIZE:
