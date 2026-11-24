@@ -434,6 +434,15 @@ class HeaderMismatchError(Exception):
     """Raised when the log file header does not match the detected sensors."""
 
 
+def get_time_date_str():
+    if USE_UTC_time:
+        return datetime.strftime(datetime.now(UTC), "%Y-%m-%dT%H:%M:%SZ")
+    if USE_LOCAL_time_with_UTC_offset:
+        return str(datetime.now().astimezone().replace(microsecond=0).isoformat())
+    # local time without UTC offset indication
+    return str(datetime.now().astimezone().replace(microsecond=0, tzinfo=None).isoformat())
+
+
 def truncate_log_top(log_file_namel):
     """Delete 10% top part of log data in order to limit file size.
     This prunes oldest data."""
@@ -633,16 +642,10 @@ try:  # -------- outer error handler loop -------------------
 
     while True:
         # ------------ write data frame --------
-        if USE_UTC_time:
-            date_str = datetime.strftime(datetime.now(UTC), "%Y-%m-%dT%H:%M:%SZ")
-        elif USE_LOCAL_time_with_UTC_offset:
-            date_str = str(datetime.now().astimezone().replace(microsecond=0).isoformat())
-        else:  # local time without UTC offset indication
-            date_str = str(datetime.now().astimezone().replace(microsecond=0, tzinfo=None).isoformat())
 
-        sensor_measurements = "".join([sensor.get_measurement_str() for sensor in my_sensors])
-
-        logline = LOGGER_NAME + SEPARATOR + date_str + sensor_measurements
+        start_time = get_time_date_str()
+        measurements = "".join(sensor.get_measurement_str() for sensor in my_sensors)
+        logline = f"{LOGGER_NAME}{SEPARATOR}{start_time}{measurements}"
 
         print_level_msg(logline, LOGDATA)
         if WRITE_log_data_to_file:
